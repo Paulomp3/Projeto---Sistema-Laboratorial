@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}LabSystem - IFPA Itaituba{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* ===== RESET & VARIABLES ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --green-900: #1a3a1f;
+            --green-800: #1e4a25;
+            --green-700: #2d6a35;
+            --green-600: #3a8043;
+            --green-500: #4a9854;
+            --green-400: #6ab874;
+            --green-100: #e8f5ea;
+            --green-50:  #f2faf3;
+
+            --teal-600: #00796b;
+            --teal-400: #26a69a;
+
+            --gray-900: #1a1d23;
+            --gray-800: #2a2d35;
+            --gray-700: #3d4250;
+            --gray-500: #6b7280;
+            --gray-400: #9ca3af;
+            --gray-200: #e5e7eb;
+            --gray-100: #f3f4f6;
+            --gray-50:  #f9fafb;
+
+            --white: #ffffff;
+            --danger: #c0392b;
+            --warning: #d97706;
+            --info: #1d6fa0;
+
+            --sidebar-width: 230px;
+            --topbar-height: 0px;
+
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+
+            --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,.10);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,.14);
+
+            --font-main: 'Sora', sans-serif;
+            --font-mono: 'IBM Plex Mono', monospace;
+
+            --transition: .18s ease;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: var(--font-main);
+            background: var(--gray-100);
+            color: var(--gray-900);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button, input, select, textarea { font-family: var(--font-main); font-size: 14px; }
+
+        /* ===== LAYOUT ===== */
+        .app-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--green-900);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0; left: 0;
+            height: 100vh;
+            z-index: 100;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .sidebar-brand {
+            padding: 20px 18px 16px;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .sidebar-brand-top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+
+        .brand-icon {
+            width: 34px; height: 34px;
+            background: var(--green-500);
+            border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+            color: var(--white);
+            flex-shrink: 0;
+        }
+
+        .brand-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: .3px;
+            line-height: 1.2;
+        }
+
+        .brand-sub {
+            font-size: 10px;
+            color: var(--green-400);
+            letter-spacing: .5px;
+            text-transform: uppercase;
+            padding-left: 44px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 12px 0;
+        }
+
+        .nav-section-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--green-400);
+            padding: 14px 18px 6px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 18px;
+            color: rgba(255,255,255,.65);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background var(--transition), color var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,.06);
+            color: var(--white);
+        }
+
+        .nav-item.active {
+            background: rgba(74,152,84,.18);
+            color: var(--white);
+            border-left-color: var(--green-400);
+        }
+
+        .nav-item i {
+            width: 18px;
+            text-align: center;
+            font-size: 14px;
+            opacity: .85;
+        }
+
+        .nav-sub {
+            padding-left: 18px;
+        }
+
+        .nav-sub .nav-item {
+            padding: 7px 18px 7px 28px;
+            font-size: 12.5px;
+            border-left: none;
+        }
+
+        .nav-sub .nav-item::before {
+            content: '';
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.3);
+            flex-shrink: 0;
+        }
+
+        .nav-sub .nav-item.active::before,
+        .nav-sub .nav-item:hover::before {
+            background: var(--green-400);
+        }
+
+        .sidebar-user {
+            padding: 14px 18px;
+            border-top: 1px solid rgba(255,255,255,.08);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: var(--green-700);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px;
+            color: var(--white);
+            flex-shrink: 0;
+        }
+
+        .user-info { flex: 1; min-width: 0; }
+        .user-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--white);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .user-role {
+            font-size: 10px;
+            color: var(--green-400);
+        }
+
+        .btn-logout {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,.4);
+            cursor: pointer;
+            padding: 4px;
+            transition: color var(--transition);
+        }
+        .btn-logout:hover { color: var(--danger); }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            background: var(--white);
+            padding: 20px 28px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .page-header-left h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .page-header-left .breadcrumb {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+
+        .page-body {
+            padding: 24px 28px;
+            flex: 1;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .card-body { padding: 20px; }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1.5px solid transparent;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--green-700);
+            color: var(--white);
+            border-color: var(--green-700);
+        }
+        .btn-primary:hover { background: var(--green-800); border-color: var(--green-800); }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--gray-700);
+            border-color: var(--gray-200);
+        }
+        .btn-secondary:hover { background: var(--gray-100); }
+
+        .btn-danger {
+            background: var(--danger);
+            color: var(--white);
+            border-color: var(--danger);
+        }
+
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+        .btn-lg { padding: 11px 22px; font-size: 14px; }
+
+        /* ===== FORMS ===== */
+        .form-group { margin-bottom: 16px; }
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1.5px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            color: var(--gray-900);
+            font-size: 13px;
+            transition: border-color var(--transition), box-shadow var(--transition);
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--green-500);
+            box-shadow: 0 0 0 3px rgba(74,152,84,.12);
+        }
+
+        .form-control::placeholder { color: var(--gray-400); }
+
+        select.form-control { cursor: pointer; }
+        textarea.form-control { resize: vertical; min-height: 90px; }
+
+        .form-row {
+            display: grid;
+            gap: 14px;
+        }
+        .form-row-2 { grid-template-columns: 1fr 1fr; }
+        .form-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--gray-700);
+        }
+
+        .form-check input[type="checkbox"] {
+            width: 16px; height: 16px;
+            accent-color: var(--green-600);
+            cursor: pointer;
+        }
+
+        /* ===== TABLES ===== */
+        .table-wrapper { overflow-x: auto; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            background: var(--gray-50);
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        th {
+            padding: 10px 14px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .6px;
+            color: var(--gray-500);
+        }
+
+        td {
+            padding: 11px 14px;
+            border-bottom: 1px solid var(--gray-100);
+            font-size: 13px;
+            color: var(--gray-800);
+        }
+
+        tbody tr:hover { background: var(--green-50); }
+
+        /* ===== BADGES ===== */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-green { background: var(--green-100); color: var(--green-800); }
+        .badge-red { background: #fde8e8; color: #9b1c1c; }
+        .badge-yellow { background: #fef3c7; color: #92400e; }
+        .badge-blue { background: #dbeafe; color: #1e40af; }
+        .badge-gray { background: var(--gray-200); color: var(--gray-700); }
+
+        /* ===== ALERTS ===== */
+        .alert {
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-success { background: var(--green-100); color: var(--green-800); border-left: 3px solid var(--green-600); }
+        .alert-danger  { background: #fde8e8; color: #9b1c1c; border-left: 3px solid var(--danger); }
+        .alert-warning { background: #fef3c7; color: #92400e; border-left: 3px solid var(--warning); }
+
+        /* ===== FILTER BAR ===== */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filter-bar .form-control {
+            width: auto;
+            min-width: 140px;
+        }
+
+        /* ===== SEARCH INPUT ===== */
+        .search-wrap {
+            position: relative;
+            flex: 1;
+        }
+        .search-wrap i {
+            position: absolute;
+            left: 11px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            font-size: 13px;
+        }
+        .search-wrap input {
+            padding-left: 34px;
+        }
+
+        /* ===== ITEM CARDS (grid) ===== */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .item-card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: box-shadow var(--transition), transform var(--transition);
+            cursor: pointer;
+        }
+
+        .item-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .item-card-img {
+            width: 100%;
+            height: 120px;
+            background: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-400);
+            font-size: 36px;
+        }
+
+        .item-card-body {
+            padding: 12px;
+        }
+
+        .item-card-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 6px;
+        }
+
+        .item-card-meta {
+            font-size: 11.5px;
+            color: var(--gray-500);
+            line-height: 1.7;
+        }
+
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 2px solid var(--gray-200);
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 9px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-500);
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            transition: color var(--transition);
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0; right: 0;
+            height: 2px;
+            background: var(--green-600);
+            transform: scaleX(0);
+            transition: transform var(--transition);
+        }
+
+        .tab-btn.active { color: var(--green-700); }
+        .tab-btn.active::after { transform: scaleX(1); }
+        .tab-btn:hover { color: var(--green-700); }
+
+        /* ===== MISC ===== */
+        .divider { border: none; border-top: 1px solid var(--gray-200); margin: 20px 0; }
+        .text-muted { color: var(--gray-500); }
+        .text-sm { font-size: 12px; }
+        .mt-auto { margin-top: auto; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .gap-2 { gap: 8px; }
+        .gap-3 { gap: 12px; }
+        .ml-auto { margin-left: auto; }
+        .w-full { width: 100%; }
+
+        /* ===== DJANGO MESSAGES ===== */
+        .messages-container { margin-bottom: 16px; }
+
+        /* ===== SCROLLBAR ===== */
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 4px; }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+<div class="app-wrapper">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-top">
+                <div class="brand-icon"><i class="fa-solid fa-flask"></i></div>
+                <span class="brand-name">LabSystem</span>
+            </div>
+            <div class="brand-sub">IFPA · Itaituba</div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="{% url 'dashboard' %}" class="nav-item {% block nav_dashboard %}{% endblock %}">
+                <i class="fa-solid fa-gauge-high"></i> Dashboard
+            </a>
+            <a href="{% url 'laboratorios' %}" class="nav-item {% block nav_labs %}{% endblock %}">
+                <i class="fa-solid fa-building"></i> Laboratórios
+            </a>
+            <a href="{% url 'agendamentos' %}" class="nav-item {% block nav_agendamentos %}{% endblock %}">
+                <i class="fa-solid fa-calendar-days"></i> Agendamentos
+            </a>
+            <a href="{% url 'emprestimos' %}" class="nav-item {% block nav_emprestimos %}{% endblock %}">
+                <i class="fa-solid fa-hand-holding"></i> Empréstimos
+            </a>
+            <a href="{% url 'busca_metodologias' %}" class="nav-item {% block nav_busca %}{% endblock %}">
+                <i class="fa-solid fa-magnifying-glass-chart"></i> Busca Metodologia
+            </a>
+
+            <div class="nav-section-label">Inventário</div>
+            <a href="{% url 'inventario_cadastro' %}" class="nav-item {% block nav_cadastro %}{% endblock %}">
+                <i class="fa-solid fa-plus-circle"></i> Cadastro
+            </a>
+            <div class="nav-sub">
+                <a href="{% url 'equipamentos' %}" class="nav-item {% block nav_equipamentos %}{% endblock %}">Equipamentos</a>
+                <a href="{% url 'vidrarias' %}" class="nav-item {% block nav_vidrarias %}{% endblock %}">Vidrarias</a>
+                <a href="{% url 'reagentes' %}" class="nav-item {% block nav_reagentes %}{% endblock %}">Reagentes</a>
+                <a href="{% url 'epis' %}" class="nav-item {% block nav_epis %}{% endblock %}">EPIs</a>
+                <a href="{% url 'materiais_consumo' %}" class="nav-item {% block nav_consumo %}{% endblock %}">Mat. Consumo</a>
+            </div>
+        </nav>
+
+        <div class="sidebar-user">
+            <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
+            <div class="user-info">
+                <div class="user-name">{{ request.user.nome|default:"Usuário" }}</div>
+                <div class="user-role">{{ request.user.permissao|default:"Perfil" }}</div>
+            </div>
+            <a href="{% url 'logout' %}" class="btn-logout" title="Sair">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+        {% if messages %}
+        <div style="padding: 16px 28px 0; background: var(--white); border-bottom: 1px solid var(--gray-200);">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                <i class="fa-solid fa-circle-info"></i> {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+</div>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

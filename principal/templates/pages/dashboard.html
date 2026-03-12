@@ -1,0 +1,326 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard — LabSystem{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+
+{% block extra_css %}
+<style>
+    .stat-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .stat-card {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--gray-200);
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .stat-icon {
+        width: 44px; height: 44px;
+        border-radius: var(--radius-sm);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+
+    .stat-icon-green  { background: var(--green-100);  color: var(--green-700); }
+    .stat-icon-blue   { background: #dbeafe; color: #1d4ed8; }
+    .stat-icon-yellow { background: #fef3c7; color: #b45309; }
+    .stat-icon-red    { background: #fde8e8; color: #b91c1c; }
+
+    .stat-value {
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--gray-900);
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 12px;
+        color: var(--gray-500);
+        margin-top: 3px;
+    }
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+        .dashboard-grid { grid-template-columns: 1fr; }
+    }
+
+    .section-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--gray-700);
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        margin-bottom: 12px;
+    }
+
+    .filter-chips {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+    }
+
+    .filter-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: var(--white);
+        border: 1.5px solid var(--gray-200);
+        color: var(--gray-600);
+        cursor: pointer;
+        transition: all .15s;
+    }
+    .filter-chip:hover, .filter-chip.active {
+        background: var(--green-100);
+        border-color: var(--green-400);
+        color: var(--green-800);
+    }
+
+    .filter-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+    }
+    .filter-row select {
+        padding: 7px 10px;
+        border: 1.5px solid var(--gray-200);
+        border-radius: var(--radius-sm);
+        font-family: var(--font-main);
+        font-size: 12px;
+        color: var(--gray-700);
+        background: var(--white);
+        cursor: pointer;
+        outline: none;
+    }
+    .filter-row select:focus {
+        border-color: var(--green-500);
+    }
+
+    .metric-boxes {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+    }
+
+    .metric-box {
+        background: var(--gray-50);
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-sm);
+        padding: 14px;
+        text-align: center;
+    }
+
+    .metric-box-value {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--gray-900);
+    }
+
+    .metric-box-label {
+        font-size: 11px;
+        color: var(--gray-500);
+        margin-top: 2px;
+    }
+
+    .date-badge {
+        font-size: 12px;
+        color: var(--gray-500);
+        font-weight: 500;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Dashboard</h1>
+        <div class="breadcrumb">IFPA – Laboratórios Multidisciplinares · Campus Itaituba</div>
+    </div>
+    <span class="date-badge">
+        <i class="fa-regular fa-calendar"></i>
+        {{ data_atual|date:"l, d \d\e F \d\e Y" }}
+    </span>
+</div>
+
+<div class="page-body">
+
+    <!-- STAT CARDS -->
+    <div class="stat-cards">
+        <div class="stat-card">
+            <div class="stat-icon stat-icon-green"><i class="fa-solid fa-calendar-check"></i></div>
+            <div>
+                <div class="stat-value">{{ total_agendamentos_hoje|default:"0" }}</div>
+                <div class="stat-label">Agendamentos Hoje</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon stat-icon-blue"><i class="fa-solid fa-hand-holding"></i></div>
+            <div>
+                <div class="stat-value">{{ total_emprestimos_ativos|default:"0" }}</div>
+                <div class="stat-label">Empréstimos Ativos</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon stat-icon-yellow"><i class="fa-solid fa-boxes-stacked"></i></div>
+            <div>
+                <div class="stat-value">{{ total_materiais|default:"0" }}</div>
+                <div class="stat-label">Itens no Estoque</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon stat-icon-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <div>
+                <div class="stat-value">{{ total_ocorrencias|default:"0" }}</div>
+                <div class="stat-label">Ocorrências Abertas</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AGENDAMENTOS DO DIA -->
+    <div class="card" style="margin-bottom: 20px;">
+        <div class="card-header">
+            <span class="card-title"><i class="fa-solid fa-clock" style="color: var(--green-600);"></i> Agendamentos de Hoje</span>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mês</th>
+                        <th>Data da Reserva</th>
+                        <th>Atividade</th>
+                        <th>Requerente</th>
+                        <th>Horário</th>
+                        <th>Laboratório</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ag in agendamentos_hoje %}
+                    <tr>
+                        <td>{{ ag.data_inicio|date:"F" }}</td>
+                        <td>{{ ag.data_inicio|date:"d/m/Y" }}</td>
+                        <td>{{ ag.tipo_atividade }}</td>
+                        <td>{{ ag.usuario.nome }}</td>
+                        <td>{{ ag.horario_inicio }} – {{ ag.horario_final }}</td>
+                        <td>{{ ag.laboratorio.nome }}</td>
+                        <td><span class="badge badge-green">Confirmado</span></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" style="text-align:center; color: var(--gray-400); padding: 28px;">
+                            <i class="fa-regular fa-calendar-xmark" style="font-size:20px; display:block; margin-bottom:6px;"></i>
+                            Nenhum agendamento para hoje
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- GRID: MÉTRICAS + FILTROS -->
+    <div class="dashboard-grid">
+        <div>
+            <!-- FILTROS DE RELATÓRIO -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title"><i class="fa-solid fa-chart-bar" style="color: var(--green-600);"></i> Métricas por Filtro</span>
+                </div>
+                <div class="card-body">
+                    <form method="get" class="filter-row">
+                        <select name="ano">
+                            <option>2025</option>
+                            <option>2026</option>
+                        </select>
+                        <select name="mes">
+                            <option>Janeiro</option><option>Fevereiro</option><option>Março</option>
+                            <option>Abril</option><option>Maio</option><option>Junho</option>
+                            <option>Julho</option><option>Agosto</option><option>Setembro</option>
+                            <option>Outubro</option><option>Novembro</option><option selected>Dezembro</option>
+                        </select>
+                        <select name="laboratorio">
+                            <option value="">Todos os Labs</option>
+                            {% for lab in laboratorios %}
+                            <option value="{{ lab.id }}">{{ lab.nome }}</option>
+                            {% endfor %}
+                        </select>
+                        <select name="tipo">
+                            <option value="">Todos os Tipos</option>
+                            <option>Ensino</option>
+                            <option>Pesquisa</option>
+                            <option>Extensão</option>
+                        </select>
+                        <button type="submit" style="padding: 7px 14px; background: var(--green-700); color: var(--white); border: none; border-radius: var(--radius-sm); cursor: pointer; font-family: var(--font-main); font-size: 12px; font-weight: 600;">
+                            Filtrar
+                        </button>
+                    </form>
+
+                    <div class="metric-boxes">
+                        <div class="metric-box">
+                            <div class="metric-box-value" style="color: var(--green-700);">{{ metricas.materiais|default:"–" }}</div>
+                            <div class="metric-box-label">Materiais</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-box-value" style="color: #b45309;">{{ metricas.ocorrencias|default:"–" }}</div>
+                            <div class="metric-box-label">Ocorrências</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-box-value" style="color: #1d4ed8;">{{ metricas.agendamentos|default:"–" }}</div>
+                            <div class="metric-box-label">Agendamentos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EMPRÉSTIMOS RECENTES -->
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title"><i class="fa-solid fa-hand-holding-box" style="color: var(--green-600);"></i> Empréstimos Recentes</span>
+                    <a href="{% url 'emprestimos' %}" style="font-size:12px; color: var(--green-600);">Ver todos</a>
+                </div>
+                <div style="padding: 8px 0;">
+                    {% for emp in emprestimos_recentes %}
+                    <div style="padding: 10px 20px; border-bottom: 1px solid var(--gray-100); display: flex; align-items: center; gap: 10px;">
+                        <div style="width:36px;height:36px;border-radius:50%;background:var(--green-100);display:flex;align-items:center;justify-content:center;color:var(--green-700);flex-shrink:0;">
+                            <i class="fa-solid fa-user" style="font-size:13px;"></i>
+                        </div>
+                        <div style="flex:1;min-width:0;">
+                            <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ emp.nome_requerente }}</div>
+                            <div style="font-size:11px;color:var(--gray-500);">{{ emp.data_retirada|date:"d/m/Y" }}</div>
+                        </div>
+                        <span class="badge {% if emp.devolvido %}badge-green{% else %}badge-yellow{% endif %}">
+                            {% if emp.devolvido %}Devolvido{% else %}Pendente{% endif %}
+                        </span>
+                    </div>
+                    {% empty %}
+                    <div style="padding: 24px; text-align: center; color: var(--gray-400); font-size: 13px;">
+                        Nenhum empréstimo recente
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

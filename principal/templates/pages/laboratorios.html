@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% block title %}Laboratórios — LabSystem{% endblock %}
+{% block nav_labs %}active{% endblock %}
+
+{% block extra_css %}
+<style>
+    .lab-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 18px;
+    }
+
+    .lab-card {
+        background: var(--white);
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        transition: box-shadow .18s, transform .18s;
+    }
+
+    .lab-card:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+    }
+
+    .lab-card-header {
+        padding: 16px 18px 12px;
+        border-bottom: 1px solid var(--gray-100);
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .lab-card-icon {
+        width: 40px; height: 40px;
+        border-radius: 10px;
+        background: var(--green-100);
+        display: flex; align-items: center; justify-content: center;
+        color: var(--green-700);
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+
+    .lab-card-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--gray-900);
+        flex: 1;
+    }
+
+    .lab-card-tipo {
+        font-size: 11px;
+        color: var(--gray-500);
+        margin-top: 2px;
+    }
+
+    .lab-card-body {
+        padding: 14px 18px;
+    }
+
+    .lab-card-info {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .lab-info-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12.5px;
+        color: var(--gray-600);
+    }
+
+    .lab-info-row i {
+        width: 14px;
+        color: var(--green-600);
+        font-size: 12px;
+    }
+
+    .lab-card-footer {
+        padding: 10px 18px;
+        border-top: 1px solid var(--gray-100);
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .intro-box {
+        background: var(--white);
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-md);
+        padding: 14px 18px;
+        margin-bottom: 20px;
+        font-size: 13px;
+        color: var(--gray-600);
+        line-height: 1.7;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Laboratórios</h1>
+        <div class="breadcrumb">Gestão dos laboratórios do campus</div>
+    </div>
+</div>
+
+<div class="page-body">
+
+    <div class="intro-box">
+        <i class="fa-solid fa-circle-info" style="color: var(--green-600);"></i>
+        Aqui você visualiza todos os laboratórios disponíveis no campus, suas informações de localização, área e status de funcionamento.
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filter-bar" style="margin-bottom: 18px;">
+        <div class="search-wrap" style="flex:1; max-width: 360px;">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" class="form-control" placeholder="Buscar laboratório..." id="searchInput">
+        </div>
+
+        <div class="tabs" style="margin-bottom:0; border-bottom:none; gap:4px;">
+            <button class="tab-btn active" onclick="filterStatus(this, 'todos')">Todos</button>
+            <button class="tab-btn" onclick="filterStatus(this, 'ativo')">Ativos</button>
+            <button class="tab-btn" onclick="filterStatus(this, 'manutencao')">Manutenção</button>
+            <button class="tab-btn" onclick="filterStatus(this, 'inativo')">Inativos</button>
+        </div>
+    </div>
+
+    <!-- GRID DE LABS -->
+    <div class="lab-cards" id="labGrid">
+        {% for lab in laboratorios %}
+        <div class="lab-card" data-status="{{ lab.status|lower }}" data-nome="{{ lab.nome|lower }}">
+            <div class="lab-card-header">
+                <div class="lab-card-icon"><i class="fa-solid fa-flask-vial"></i></div>
+                <div style="flex:1;">
+                    <div class="lab-card-name">{{ lab.nome }}</div>
+                    <div class="lab-card-tipo">{{ lab.tipo }}</div>
+                </div>
+                <span class="badge
+                    {% if lab.status == 'Ativo' %}badge-green
+                    {% elif lab.status == 'Manutencao' %}badge-yellow
+                    {% else %}badge-red{% endif %}">
+                    {{ lab.status }}
+                </span>
+            </div>
+            <div class="lab-card-body">
+                <div class="lab-card-info">
+                    <div class="lab-info-row">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>{{ lab.localizacao }}</span>
+                    </div>
+                    <div class="lab-info-row">
+                        <i class="fa-solid fa-ruler-combined"></i>
+                        <span>{{ lab.area }} m²</span>
+                    </div>
+                </div>
+            </div>
+            <div class="lab-card-footer">
+                <a href="{% url 'laboratorio_detalhe' lab.id %}" class="btn btn-secondary btn-sm">
+                    <i class="fa-solid fa-eye"></i> Ver detalhes
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div style="grid-column: 1/-1; text-align:center; padding: 48px; color: var(--gray-400);">
+            <i class="fa-solid fa-flask-vial" style="font-size:32px; display:block; margin-bottom:10px;"></i>
+            Nenhum laboratório cadastrado ainda.
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const val = this.value.toLowerCase();
+        document.querySelectorAll('.lab-card').forEach(c => {
+            c.style.display = c.dataset.nome.includes(val) ? '' : 'none';
+        });
+    });
+
+    function filterStatus(btn, status) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.lab-card').forEach(c => {
+            c.style.display = (status === 'todos' || c.dataset.status === status) ? '' : 'none';
+        });
+    }
+</script>
+{% endblock %}

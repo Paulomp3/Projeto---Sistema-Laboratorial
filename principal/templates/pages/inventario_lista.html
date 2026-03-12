@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{# USAGE: Pass `titulo`, `tipo`, `campos_cabecalho`, `nav_block`, `icone` via context #}
+{% block title %}{{ titulo }} — LabSystem{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>{{ titulo }}</h1>
+        <div class="breadcrumb">Inventário › {{ titulo }}</div>
+    </div>
+    <a href="{% url 'inventario_cadastro' %}?tipo={{ tipo }}" class="btn btn-primary">
+        <i class="fa-solid fa-plus"></i> Cadastrar {{ titulo|slice:"-1" }}
+    </a>
+</div>
+
+<div class="page-body">
+
+    <div class="filter-bar">
+        <div class="search-wrap" style="flex:1;max-width:360px;">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" class="form-control" id="searchInput" placeholder="Buscar {{ titulo|lower }}...">
+        </div>
+        <select class="form-control" style="width:auto;" id="labFilter">
+            <option value="">Todos os laboratórios</option>
+            {% for lab in laboratorios %}
+            <option value="{{ lab.id }}">{{ lab.nome }}</option>
+            {% endfor %}
+        </select>
+        <select class="form-control" style="width:auto;" id="statusFilter">
+            <option value="">Todos os status</option>
+            <option value="ativo">Ativo</option>
+            <option value="inativo">Inativo</option>
+        </select>
+    </div>
+
+    <div class="items-grid" id="itemsGrid">
+        {% for item in itens %}
+        <div class="item-card"
+            data-nome="{{ item.nome|lower }}"
+            data-lab="{{ item.estoque_set.first.laboratorio.id|default:'' }}"
+            data-status="{{ item.status|lower }}">
+            <div class="item-card-img">
+                {% if item.imagem %}
+                    <img src="{{ item.imagem.url }}" alt="{{ item.nome }}"
+                        style="width:100%;height:100%;object-fit:cover;">
+                {% else %}
+                    <i class="{{ icone_fa|default:'fa-solid fa-box' }}"></i>
+                {% endif %}
+            </div>
+            <div class="item-card-body">
+                <div class="item-card-name">{{ item.nome }}</div>
+                <div class="item-card-meta">
+                    {% if item.fabricante %}<div><i class="fa-solid fa-industry" style="width:12px;color:var(--green-600);"></i> {{ item.fabricante }}</div>{% endif %}
+                    {% if item.localizacao %}<div><i class="fa-solid fa-location-dot" style="width:12px;color:var(--green-600);"></i> {{ item.localizacao }}</div>{% endif %}
+                    {% if item.patrimonio %}<div><i class="fa-solid fa-barcode" style="width:12px;color:var(--green-600);"></i> {{ item.patrimonio }}</div>{% endif %}
+                    {% if item.lote %}<div><i class="fa-solid fa-hashtag" style="width:12px;color:var(--green-600);"></i> Lote: {{ item.lote }}</div>{% endif %}
+                    {% if item.validade %}<div><i class="fa-regular fa-calendar" style="width:12px;color:var(--green-600);"></i> Val: {{ item.validade|date:"d/m/Y" }}</div>{% endif %}
+                    {% if item.tamanho %}<div><i class="fa-solid fa-ruler" style="width:12px;color:var(--green-600);"></i> {{ item.tamanho }}</div>{% endif %}
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;">
+                    <span class="badge {% if item.status == 'ativo' %}badge-green{% else %}badge-gray{% endif %}">
+                        {{ item.status|capfirst }}
+                    </span>
+                    <a href="{% url 'material_detalhe' item.id %}"
+                        style="font-size:12px;color:var(--green-600);">
+                        <i class="fa-solid fa-pen-to-square"></i> Editar
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--gray-400);">
+            <i class="{{ icone_fa|default:'fa-solid fa-box' }}" style="font-size:32px;display:block;margin-bottom:10px;"></i>
+            Nenhum item cadastrado ainda.
+            <div style="margin-top:12px;">
+                <a href="{% url 'inventario_cadastro' %}?tipo={{ tipo }}" class="btn btn-primary btn-sm">
+                    <i class="fa-solid fa-plus"></i> Cadastrar o primeiro
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function applyFilters() {
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        const status = document.getElementById('statusFilter').value.toLowerCase();
+        const lab = document.getElementById('labFilter').value;
+
+        document.querySelectorAll('.item-card').forEach(card => {
+            const matchSearch = !search || card.dataset.nome.includes(search);
+            const matchStatus = !status || card.dataset.status === status;
+            const matchLab = !lab || card.dataset.lab === lab;
+            card.style.display = (matchSearch && matchStatus && matchLab) ? '' : 'none';
+        });
+    }
+
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('statusFilter').addEventListener('change', applyFilters);
+    document.getElementById('labFilter').addEventListener('change', applyFilters);
+</script>
+{% endblock %}
