@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca de Metodologias — LabSystem IFPA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Sora',sans-serif;background:#f3f4f6;color:#1a1d23;font-size:14px;display:flex;min-height:100vh}
+        .sidebar{width:230px;background:#1a3a1f;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh}
+        .brand{padding:18px;border-bottom:1px solid rgba(255,255,255,.08)}
+        .brand-top{display:flex;align-items:center;gap:10px}
+        .brand-icon{width:32px;height:32px;background:#4a9854;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px}
+        .brand-name{font-size:13px;font-weight:700;color:#fff}
+        .brand-sub{font-size:10px;color:#6ab874;letter-spacing:.5px;text-transform:uppercase;margin-top:3px;padding-left:42px}
+        nav{flex:1;padding:10px 0}
+        .nav-label{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#6ab874;padding:12px 18px 5px}
+        .nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;color:rgba(255,255,255,.6);font-size:13px;font-weight:500;cursor:pointer;border-left:3px solid transparent}
+        .nav-item.active{background:rgba(74,152,84,.18);color:#fff;border-left-color:#6ab874}
+        .nav-item i{width:16px;text-align:center;font-size:13px}
+        .nav-sub .nav-item{padding:7px 18px 7px 32px;font-size:12px;border-left:none}
+        .nav-sub .nav-item::before{content:'';width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.3);flex-shrink:0}
+        .user-area{padding:14px 18px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px}
+        .avatar{width:32px;height:32px;border-radius:50%;background:#2d6a35;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0}
+        .user-name{font-size:12px;font-weight:600;color:#fff}
+        .user-role{font-size:10px;color:#6ab874}
+        .main{margin-left:230px;flex:1}
+        .page-header{background:#fff;padding:18px 26px;border-bottom:1px solid #e5e7eb}
+        .page-header h1{font-size:19px;font-weight:700}
+        .breadcrumb{font-size:12px;color:#6b7280;margin-top:2px}
+        .body{padding:22px 26px}
+        .search-area{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:20px 22px;margin-bottom:18px}
+        .search-bar{display:flex;gap:10px}
+        .search-wrap{position:relative;flex:1}
+        .search-wrap i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#9ca3af;font-size:14px}
+        .search-wrap input{width:100%;padding:11px 14px 11px 38px;border:2px solid #e5e7eb;border-radius:8px;font-family:'Sora',sans-serif;font-size:14px;outline:none}
+        .search-wrap input:focus{border-color:#4a9854}
+        .btn-search{display:inline-flex;align-items:center;gap:7px;padding:11px 20px;background:#2d6a35;color:#fff;border:none;border-radius:8px;font-family:'Sora',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+        .search-hint{font-size:12px;color:#9ca3af;margin-top:8px}
+        .results-title{font-size:13px;font-weight:700;color:#6b7280;margin-bottom:12px}
+        .result-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:18px 20px;margin-bottom:12px}
+        .result-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+        .result-name{font-size:15px;font-weight:700}
+        .result-area{font-size:12px;color:#6b7280;margin-top:2px}
+        .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700}
+        .badge-viavel{background:#e8f5ea;color:#1e4a25}
+        .badge-pendencias{background:#fef3c7;color:#92400e}
+        .badge-inviavel{background:#fde8e8;color:#9b1c1c}
+        .divider{height:1px;background:#f3f4f6;margin:10px 0}
+        .mat-grid{display:flex;flex-wrap:wrap;gap:8px}
+        .mat-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;color:#3d4250}
+        .mat-tag.ok{background:#e8f5ea;border-color:#b7dfbb;color:#1e4a25}
+        .mat-tag.falta{background:#fde8e8;border-color:#fca5a5;color:#9b1c1c}
+        .result-desc{font-size:12px;color:#6b7280;line-height:1.7;margin-top:8px}
+    </style>
+</head>
+<body>
+<aside class="sidebar">
+    <div class="brand">
+        <div class="brand-top">
+            <div class="brand-icon"><i class="fa-solid fa-flask"></i></div>
+            <span class="brand-name">LabSystem</span>
+        </div>
+        <div class="brand-sub">IFPA · Itaituba</div>
+    </div>
+    <nav>
+        <div class="nav-item"><i class="fa-solid fa-gauge-high"></i> Dashboard</div>
+        <div class="nav-item"><i class="fa-solid fa-building"></i> Laboratórios</div>
+        <div class="nav-item"><i class="fa-solid fa-calendar-days"></i> Agendamentos</div>
+        <div class="nav-item"><i class="fa-solid fa-hand-holding"></i> Empréstimos</div>
+        <div class="nav-item active"><i class="fa-solid fa-magnifying-glass-chart"></i> Busca Metodologia</div>
+        <div class="nav-label">Inventário</div>
+        <div class="nav-item"><i class="fa-solid fa-plus-circle"></i> Cadastro</div>
+        <div class="nav-sub">
+            <div class="nav-item">Equipamentos</div>
+            <div class="nav-item">Vidrarias</div>
+            <div class="nav-item">Reagentes</div>
+            <div class="nav-item">EPIs</div>
+            <div class="nav-item">Mat. Consumo</div>
+        </div>
+    </nav>
+    <div class="user-area">
+        <div class="avatar"><i class="fa-solid fa-user"></i></div>
+        <div><div class="user-name">Paulo Silva</div><div class="user-role">Laboratório</div></div>
+    </div>
+</aside>
+
+<main class="main">
+    <div class="page-header">
+        <h1>Busca de Metodologias</h1>
+        <div class="breadcrumb">Pesquise metodologias científicas e veja a viabilidade com base no estoque</div>
+    </div>
+    <div class="body">
+        <div class="search-area">
+            <div class="search-bar">
+                <div class="search-wrap">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Ex: Titulação ácido-base, Extração por solvente, PCR...">
+                </div>
+                <button class="btn-search"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+            </div>
+            <div class="search-hint">Busque pelo nome da metodologia. O sistema verificará os materiais necessários no estoque.</div>
+        </div>
+
+        <div class="results-title">3 resultados encontrados para "Titulação"</div>
+
+        <!-- CARD VIÁVEL -->
+        <div class="result-card">
+            <div class="result-head">
+                <div>
+                    <div class="result-name">Titulação Ácido-Base (Neutralização)</div>
+                    <div class="result-area">Área: Química Analítica</div>
+                </div>
+                <span class="badge badge-viavel"><i class="fa-solid fa-circle-check"></i> Viável</span>
+            </div>
+            <div class="divider"></div>
+            <div style="font-size:12px;font-weight:700;color:#6b7280;margin-bottom:7px">MATERIAIS NECESSÁRIOS</div>
+            <div class="mat-grid">
+                <span class="mat-tag ok"><i class="fa-solid fa-check"></i> Bureta 50ml</span>
+                <span class="mat-tag ok"><i class="fa-solid fa-check"></i> Béquer 250ml</span>
+                <span class="mat-tag ok"><i class="fa-solid fa-check"></i> NaOH 0.1M</span>
+                <span class="mat-tag ok"><i class="fa-solid fa-check"></i> HCl 0.1M</span>
+                <span class="mat-tag ok"><i class="fa-solid fa-check"></i> Indicador Fenolftaleína</span>
+            </div>
+            <div class="result-desc">Método clássico de análise quantitativa para determinar a concentração de uma solução ácida ou básica através de reação de neutralização.</div>
+        </div>
+
+        <!-- CARD VIÁVEL COM PENDÊNCIAS -->
+        <div class="result-card">
+            <div class="result-head">
+                <div>
+                    <div class="result-name">Titulação Complexométrica (EDTA)</div>
+                    <div class="result-area">Área: Química Analítica</div>
+                </div>
+                <span class="badge badge-pendencias"><i class="fa-solid fa-triangle-exclamation"></i> Viável com Pendências</span>
+            </div>
+            <div class="divider"></div>
+            <div style="font-size:12px;font-weight:700;color:#6b7280;margin-bottom:7px">MATERIAIS NECESSÁRIOS</div>
+            <div class="mat-grid">
+                <span class="mat-tag ok"><i class="fa-solid fa-check"></i> Bureta 25ml</span>
+                <span class="mat-tag ok"><i class="fa-solid fa-check"></i> Béquer 500ml</span>
+                <span class="mat-tag falta"><i class="fa-solid fa-xmark"></i> EDTA 0.01M</span>
+                <span class="mat-tag ok"><i class="fa-solid fa-check"></i> Indicador Negro de Eriocromo</span>
+                <span class="mat-tag falta"><i class="fa-solid fa-xmark"></i> Tampão pH 10</span>
+            </div>
+            <div class="result-desc">Determina a dureza total da água e concentração de íons metálicos como Ca²⁺ e Mg²⁺. Requer aquisição de 2 reagentes em falta no estoque.</div>
+        </div>
+
+        <!-- CARD INVIÁVEL -->
+        <div class="result-card">
+            <div class="result-head">
+                <div>
+                    <div class="result-name">Titulação Potenciométrica</div>
+                    <div class="result-area">Área: Química Analítica / Eletroanalítica</div>
+                </div>
+                <span class="badge badge-inviavel"><i class="fa-solid fa-circle-xmark"></i> Não Viável</span>
+            </div>
+            <div class="divider"></div>
+            <div style="font-size:12px;font-weight:700;color:#6b7280;margin-bottom:7px">MATERIAIS NECESSÁRIOS</div>
+            <div class="mat-grid">
+                <span class="mat-tag falta"><i class="fa-solid fa-xmark"></i> Potenciômetro</span>
+                <span class="mat-tag falta"><i class="fa-solid fa-xmark"></i> Eletrodo de Referência Ag/AgCl</span>
+                <span class="mat-tag falta"><i class="fa-solid fa-xmark"></i> Eletrodo de Vidro</span>
+                <span class="mat-tag ok"><i class="fa-solid fa-check"></i> Béquer 100ml</span>
+                <span class="mat-tag ok"><i class="fa-solid fa-check"></i> Agitador Magnético</span>
+            </div>
+            <div class="result-desc">Técnica que utiliza eletrodos para monitorar o potencial elétrico durante a titulação. Requer equipamentos especializados não disponíveis no estoque atual.</div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

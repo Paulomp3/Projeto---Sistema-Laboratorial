@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Material — LabSystem IFPA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Sora',sans-serif;background:#f3f4f6;color:#1a1d23;font-size:14px;display:flex;min-height:100vh}
+        .sidebar{width:230px;background:#1a3a1f;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh}
+        .brand{padding:18px;border-bottom:1px solid rgba(255,255,255,.08)}
+        .brand-top{display:flex;align-items:center;gap:10px}
+        .brand-icon{width:32px;height:32px;background:#4a9854;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px}
+        .brand-name{font-size:13px;font-weight:700;color:#fff}
+        .brand-sub{font-size:10px;color:#6ab874;letter-spacing:.5px;text-transform:uppercase;margin-top:3px;padding-left:42px}
+        nav{flex:1;padding:10px 0}
+        .nav-label{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#6ab874;padding:12px 18px 5px}
+        .nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;color:rgba(255,255,255,.6);font-size:13px;font-weight:500;cursor:pointer;border-left:3px solid transparent}
+        .nav-item.active{background:rgba(74,152,84,.18);color:#fff;border-left-color:#6ab874}
+        .nav-item i{width:16px;text-align:center;font-size:13px}
+        .nav-sub .nav-item{padding:7px 18px 7px 32px;font-size:12px;border-left:none}
+        .nav-sub .nav-item::before{content:'';width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.3);flex-shrink:0}
+        .user-area{padding:14px 18px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px}
+        .avatar{width:32px;height:32px;border-radius:50%;background:#2d6a35;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0}
+        .user-name{font-size:12px;font-weight:600;color:#fff}
+        .user-role{font-size:10px;color:#6ab874}
+        .main{margin-left:230px;flex:1}
+        .page-header{background:#fff;padding:18px 26px;border-bottom:1px solid #e5e7eb}
+        .page-header h1{font-size:19px;font-weight:700}
+        .breadcrumb{font-size:12px;color:#6b7280;margin-top:2px}
+        .body{padding:22px 26px}
+        .tipo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:22px}
+        .tipo-card{background:#fff;border:2px solid #e5e7eb;border-radius:10px;padding:16px 10px;text-align:center;cursor:pointer;transition:all .15s}
+        .tipo-card.selected{border-color:#4a9854;background:#e8f5ea}
+        .tipo-card:hover{border-color:#4a9854}
+        .tipo-icon{width:42px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 8px}
+        .ti-blue{background:#dbeafe;color:#1e40af}
+        .ti-green{background:#e8f5ea;color:#1e4a25}
+        .ti-purple{background:#ede9fe;color:#5b21b6}
+        .ti-yellow{background:#fef3c7;color:#92400e}
+        .ti-orange{background:#ffedd5;color:#c2410c}
+        .tipo-label{font-size:12px;font-weight:700;color:#3d4250}
+        .card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:22px 24px;margin-bottom:18px}
+        .section-title{font-size:13px;font-weight:700;color:#1e4a25;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #e8f5ea;display:flex;align-items:center;gap:8px}
+        .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+        .form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+        label{font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.5px}
+        input,select{padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:7px;font-family:'Sora',sans-serif;font-size:13px;color:#1a1d23;outline:none;background:#fff}
+        input:focus,select:focus{border-color:#4a9854}
+        .actions{display:flex;gap:10px;justify-content:flex-end}
+        .btn{padding:9px 18px;border-radius:7px;font-family:'Sora',sans-serif;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #e5e7eb;background:#fff;color:#3d4250}
+        .btn-primary{background:#2d6a35;color:#fff;border-color:#2d6a35}
+    </style>
+</head>
+<body>
+<aside class="sidebar">
+    <div class="brand">
+        <div class="brand-top">
+            <div class="brand-icon"><i class="fa-solid fa-flask"></i></div>
+            <span class="brand-name">LabSystem</span>
+        </div>
+        <div class="brand-sub">IFPA · Itaituba</div>
+    </div>
+    <nav>
+        <div class="nav-item"><i class="fa-solid fa-gauge-high"></i> Dashboard</div>
+        <div class="nav-item"><i class="fa-solid fa-building"></i> Laboratórios</div>
+        <div class="nav-item"><i class="fa-solid fa-calendar-days"></i> Agendamentos</div>
+        <div class="nav-item"><i class="fa-solid fa-hand-holding"></i> Empréstimos</div>
+        <div class="nav-item"><i class="fa-solid fa-magnifying-glass-chart"></i> Busca Metodologia</div>
+        <div class="nav-label">Inventário</div>
+        <div class="nav-item active"><i class="fa-solid fa-plus-circle"></i> Cadastro</div>
+        <div class="nav-sub">
+            <div class="nav-item">Equipamentos</div>
+            <div class="nav-item">Vidrarias</div>
+            <div class="nav-item">Reagentes</div>
+            <div class="nav-item">EPIs</div>
+            <div class="nav-item">Mat. Consumo</div>
+        </div>
+    </nav>
+    <div class="user-area">
+        <div class="avatar"><i class="fa-solid fa-user"></i></div>
+        <div><div class="user-name">Paulo Silva</div><div class="user-role">Laboratório</div></div>
+    </div>
+</aside>
+
+<main class="main">
+    <div class="page-header">
+        <h1>Cadastro de Material</h1>
+        <div class="breadcrumb">Inventário › Cadastro</div>
+    </div>
+    <div class="body">
+
+        <!-- TIPO SELECTOR -->
+        <div class="card">
+            <div class="section-title"><i class="fa-solid fa-tag"></i> Tipo de Material</div>
+            <div class="tipo-grid">
+                <div class="tipo-card selected">
+                    <div class="tipo-icon ti-blue"><i class="fa-solid fa-microscope"></i></div>
+                    <div class="tipo-label">Equipamento</div>
+                </div>
+                <div class="tipo-card">
+                    <div class="tipo-icon ti-green"><i class="fa-solid fa-flask"></i></div>
+                    <div class="tipo-label">Vidraria</div>
+                </div>
+                <div class="tipo-card">
+                    <div class="tipo-icon ti-purple"><i class="fa-solid fa-vial"></i></div>
+                    <div class="tipo-label">Reagente</div>
+                </div>
+                <div class="tipo-card">
+                    <div class="tipo-icon ti-yellow"><i class="fa-solid fa-helmet-safety"></i></div>
+                    <div class="tipo-label">EPI</div>
+                </div>
+                <div class="tipo-card">
+                    <div class="tipo-icon ti-orange"><i class="fa-solid fa-boxes-stacked"></i></div>
+                    <div class="tipo-label">Consumível</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CAMPOS GERAIS -->
+        <div class="card">
+            <div class="section-title"><i class="fa-solid fa-circle-info"></i> Dados Gerais</div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Nome do Material</label>
+                    <input type="text" placeholder="Ex: Microscópio Óptico Binocular">
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select><option>Bom estado</option><option>Danificado</option><option>Em manutenção</option><option>Descartado</option></select>
+                </div>
+                <div class="form-group">
+                    <label>Laboratório</label>
+                    <select><option>Selecione</option><option>Lab I – Informática</option><option>Lab II – Química</option><option>Lab III – Biologia</option><option>Lab IV – Física</option></select>
+                </div>
+                <div class="form-group">
+                    <label>Quantidade</label>
+                    <input type="number" placeholder="0" min="0">
+                </div>
+            </div>
+        </div>
+
+        <!-- CAMPOS ESPECÍFICOS DE EQUIPAMENTO -->
+        <div class="card">
+            <div class="section-title"><i class="fa-solid fa-microscope"></i> Dados do Equipamento</div>
+            <div class="grid-3">
+                <div class="form-group">
+                    <label>Número de Patrimônio</label>
+                    <input type="text" placeholder="Ex: 000123/2023">
+                </div>
+                <div class="form-group">
+                    <label>Fabricante</label>
+                    <input type="text" placeholder="Ex: Nikon">
+                </div>
+                <div class="form-group">
+                    <label>Ano de Aquisição</label>
+                    <input type="number" placeholder="2023">
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn">Cancelar</button>
+            <button class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar Material</button>
+        </div>
+    </div>
+</main>
+</body>
+</html>
