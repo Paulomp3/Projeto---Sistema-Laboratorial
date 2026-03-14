@@ -17,8 +17,10 @@ urlpatterns = [
     path('emprestimo_externo/', views.emprestimo_externo, name='emprestimo_externo'),
     path('emprestimo_interno/', views.emprestimo_interno, name='emprestimo_interno'),
     path('busca_metodologias/', views.busca_metodologias, name='busca_metodologias'),
-    path('cadastro/', views.cadastro, name='cadastro'),
-    path('inventario_equipamentos/', views.inventario_equipamentos, name='inventario_equipamentos'),
+    # ----- CRUD DE MATERIAIS -----
+    path('cadastro/', views.Cadastro, name='cadastro'),
+    path('equipamentos/', views.Equipamentos, name='inventario_equipamentos'),
+    # ----- CRUD DE MATERIAIS - FIM -----
     
 ]
 

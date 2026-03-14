@@ -7,9 +7,11 @@ def login(request):
 
 def busca_metodologias(request):
     return render(request, 'pages/Metodologias/busca_metodologias.html')
-
-def cadastro(request):
-    return render(request, 'pages/Inventario/cadastro.html')
+ # ---- CRUD DE MATERIAIS ----
+def Cadastro(request):
+    return render(request, 'pages/Materiais/cadastro.html')
+def Equipamentos(request):
+    return render(request, 'pages/Materiais/inventario_equipamentos.html')
 
 def dashboard(request):
     return render(request, 'pages/Dashboard/dashboard.html')
@@ -23,8 +25,6 @@ def emprestimo_interno(request):
 def emprestimos(request):
     return render(request, 'pages/Emprestimos/emprestimos.html')
 
-def inventario_equipamentos(request):
-    return render(request, 'pages/Inventario/inventario_equipamentos.html')
 # ----- CRUD DE LABORATORIOS -----
 def laboratorios_listar(request):
     match request.method:
