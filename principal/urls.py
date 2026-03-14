@@ -5,7 +5,10 @@ from principal import views
 urlpatterns = [
     path('', views.login, name='login'),
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('laboratorios/', views.laboratorios, name='laboratorios'),
+    # ----- CRUD DE LABORATORIOS -----
+    path('laboratorios/', views.laboratorios_listar, name='laboratorios_listar'),
+    path('laboratorios/form/', views.laboratorios_form, name='laboratorios_form'),
+    # ----- CRUD DE LABORATORIOS - FIM -----
     path('agendamentos/', views.agendamentos, name='agendamentos'),
     path('novo_agendamento/', views.novo_agendamento, name='novo_agendamento'),
     path('emprestimos/', views.emprestimos, name='emprestimos'),

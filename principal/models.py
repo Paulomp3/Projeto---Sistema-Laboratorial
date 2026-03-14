@@ -4,9 +4,10 @@ from django.db import models
 class Permissoes(models.Model):
     id_permissoes = models.AutoField(db_column='ID_Permissoes', primary_key=True)
     permissao = models.CharField(db_column='Permissao', max_length=150)
-
     class Meta:
         db_table = 'Permissoes'
+    def __str__(self):
+        return self.permissao
         
 
 
@@ -21,6 +22,9 @@ class Usuarios(models.Model):
 
     class Meta:
         db_table = 'Usuarios'
+    
+    def __str__(self):
+        return self.nome
 
 
 class Laboratorios(models.Model):
@@ -33,6 +37,8 @@ class Laboratorios(models.Model):
 
     class Meta:
         db_table = 'Laboratorios'
+    def __str__(self):
+        return self.nome
 
 
 class Agendamentos(models.Model):
@@ -59,6 +65,8 @@ class Emprestimos(models.Model):
 
     class Meta:
         db_table = 'Emprestimos'
+    def __str__(self):
+        return self.nome_requerente
 
 
 class EmprestimoExterno(models.Model):
@@ -79,6 +87,8 @@ class Material(models.Model):
 
     class Meta:
         db_table = 'Material'
+    def __str__(self):
+        return self.nome
 
 
 class MaterialEquipamentos(models.Model):
@@ -89,11 +99,13 @@ class MaterialEquipamentos(models.Model):
         db_table = 'Material_Equipamentos'
 
 
+
 class MaterialVidrarias(models.Model):
     id_material = models.OneToOneField(Material, models.DO_NOTHING, db_column='ID_Material', primary_key=True)
 
     class Meta:
         db_table = 'Material_Vidrarias'
+    
 
 
 class MaterialReagentes(models.Model):
@@ -104,6 +116,7 @@ class MaterialReagentes(models.Model):
 
     class Meta:
         db_table = 'Material_Reagentes'
+
 
 
 class MaterialConsumiveis(models.Model):

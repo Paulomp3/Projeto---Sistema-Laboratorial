@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from .models import *
 
 def login(request):
     return render(request, 'pages/Login/login.html')
@@ -24,10 +25,29 @@ def emprestimos(request):
 
 def inventario_equipamentos(request):
     return render(request, 'pages/Inventario/inventario_equipamentos.html')
+# ----- CRUD DE LABORATORIOS -----
+def laboratorios_listar(request):
+    match request.method:
+        case 'GET':
+            lab = Laboratorios.objects.all() # Consulta para obter todos os laboratórios do banco de dados
+            return render(request, 'pages/Laboratorios/listar.html', {'laboratorios': lab}) # Renderiza a página de listagem de laboratórios, passando os laboratórios como contexto
+def laboratorios_form(request):
+    match request.method:
+        case 'GET':   
+            return render(request, 'pages/Laboratorios/form.html')
+        case 'POST':
+           nome = request.POST.get('nome')
+           tipo = request.POST.get('tipo')
+           localizacao = request.POST.get('localizacao')
+           area  = request.POST.get('area')
+           status = request.POST.get('status')
 
-def laboratorios(request):
-    return render(request, 'pages/Laboratorios/laboratorios.html')
+           lab = Laboratorios(nome=nome, tipo=tipo, localizacao=localizacao, area=area, status=status)
+           lab.save()
+           return redirect('laboratorios_listar')
 
+                
+# ----- CRUD DE LABORATORIOS - FIM -----      
 def agendamentos(request):
     return render(request, 'pages/Agendamentos/agendamentos.html')
 
