@@ -6,8 +6,8 @@ urlpatterns = [
     path('', views.login, name='login'),
     path('dashboard/', views.dashboard, name='dashboard'),
     # ----- CRUD DE LABORATORIOS -----
-    path('laboratorios/', views.laboratorios_listar, name='laboratorios_listar'),
-    path('laboratorios/form/', views.laboratorios_form, name='laboratorios_form'),
+    path('laboratorios/', views.laboratorios_listar, name='laboratorios_listar'), # Lista os laboratorios do sistema
+    path('laboratorios/form/', views.laboratorios_form, name='laboratorios_form'), # Exibe o formulário para criar um novo laboratório e processa a criação do laboratório 
     # ----- CRUD DE LABORATORIOS - FIM -----
     path('agendamentos/', views.agendamentos, name='agendamentos'),
     path('novo_agendamento/', views.novo_agendamento, name='novo_agendamento'),

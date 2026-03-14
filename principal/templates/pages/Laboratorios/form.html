@@ -48,9 +48,9 @@
     <div class="brand">
         <div class="brand-top">
             <div class="brand-icon"><i class="fa-solid fa-flask"></i></div>
-            <span class="brand-name">LabSystem</span>
+            <span class="brand-name">Sistema Laboratorial</span>
         </div>
-        <div class="brand-sub">IFPA · Itaituba</div>
+        <div class="brand-sub">IFPA - Itaituba</div>
     </div>
     <nav>
         <div class="nav-item"><i class="fa-solid fa-gauge-high"></i> Dashboard</div>
@@ -78,8 +78,8 @@
 
 <main class="main">
     <div class="page-header">
-        <h1>{% if lab %}Editar Laboratório{% else %}Novo Laboratório{% endif %}</h1>
-        <div class="breadcrumb">Laboratórios › {% if lab %}Editar{% else %}Novo{% endif %}</div>
+        <h1>{% if lab %}Editar Laboratório{% else %}Novo Laboratório{% endif %}</h1> <!-- Título dinâmico que muda entre "Editar Laboratório" e "Novo Laboratório" dependendo se a variável 'lab' existe ou não -->
+        <div class="breadcrumb">Laboratórios › {% if lab %}Editar{% else %}Novo{% endif %}</div> <!-- Breadcrumb dinâmico que acompanha o título, indicando a navegação atual do usuário -->
     </div>
     <div class="body">
         <div class="card">
@@ -87,27 +87,27 @@
                 <i class="fa-solid fa-building"></i>
                 Dados do Laboratório
             </div>
-            <form action="{% url "laboratorios_form" %}" method="POST">
-                {% csrf_token %}
+            <form action="{% url "laboratorios_form" %}" method="POST"> <!-- Formulário que envia os dados para a URL nomeada 'laboratorios_form' usando o método POST -->
+                {% csrf_token %} <!-- Token de segurança para proteger contra ataques CSRF, obrigatório em formulários Django -->
                 <div class="grid-2">
                     <div class="form-group">
-                        <label for="nome">Nome</label>
+                        <label for="nome">Nome</label> <!-- Campo de entrada para o nome do laboratório, com um placeholder de exemplo e preenchido com o valor atual se 'lab' existir -->
                         <input type="text" id="nome" name="nome" placeholder="Ex: Lab I – Informática" value="{{ lab.nome }}">
                     </div>
                     <div class="form-group">
-                        <label for="tipo">Tipo</label>
+                        <label for="tipo">Tipo</label> <!-- Campo de entrada para o tipo do laboratório, com um placeholder de exemplo e preenchido com o valor atual se 'lab' existir -->
                         <input type="text" id="tipo" name="tipo" placeholder="Ex: Química, Biologia..." value="{{ lab.tipo }}">
                     </div>
                     <div class="form-group">
-                        <label for="localizacao">Localização</label>
+                        <label for="localizacao">Localização</label> <!-- Campo de entrada para a localização do laboratório, com um placeholder de exemplo e preenchido com o valor atual se 'lab' existir -->
                         <input type="text" id="localizacao" name="localizacao" placeholder="Ex: Bloco A – Sala 101" value="{{ lab.localizacao }}">
                     </div>
                     <div class="form-group">
-                        <label for="area">Área (m²)</label>
+                        <label for="area">Área (m²)</label> <!-- Campo de entrada para a área do laboratório em metros quadrados, com um placeholder de exemplo e preenchido com o valor atual se 'lab' existir -->
                         <input type="number" id="area" name="area" placeholder="Ex: 80" step="0.01" value="{{ lab.area }}">
                     </div>
                     <div class="form-group">
-                        <label for="status">Status</label>
+                        <label for="status">Status</label> <!-- Campo de seleção para o status do laboratório, com opções para "Ativo", "Manutenção" e "Inativo". A opção selecionada é determinada pelo valor atual de 'lab.status' -->
                         <select id="status" name="status">
                             <option value="Ativo" {% if lab.status == 'Ativo' %}selected{% endif %}>Ativo</option>
                             <option value="Manutenção" {% if lab.status == 'Manutenção' %}selected{% endif %}>Manutenção</option>
@@ -116,7 +116,7 @@
                     </div>
                 </div>
                 <div class="actions">
-                    <a href="{% url 'laboratorios_listar' %}" class="btn">Cancelar</a>
+                    <a href="{% url 'laboratorios_listar' %}" class="btn">Cancelar</a> <!-- Botão de cancelamento que redireciona para a URL nomeada 'laboratorios_listar', levando o usuário de volta à lista de laboratórios -->
                     <button type="submit" class="btn btn-primary">
                         <i class="fa-solid fa-floppy-disk"></i>
                         {% if lab %}Salvar Alterações{% else %}Cadastrar{% endif %}

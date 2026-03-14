@@ -64,7 +64,7 @@
     <div class="brand">
         <div class="brand-top">
             <div class="brand-icon"><i class="fa-solid fa-flask"></i></div>
-            <span class="brand-name">LabSystem</span>
+            <span class="brand-name">Sistema Laboratorial</span>
         </div>
         <div class="brand-sub">IFPA - Itaituba</div>
     </div>
@@ -98,7 +98,7 @@
             <h1>Laboratórios</h1>
             <div class="breadcrumb">Gestão dos laboratórios do campus</div>
         </div>
-        <a href="{% url 'laboratorios_form' %}" class="btn-primary"> <!--Url para redirecionar para a página de criação de laboratório -->
+        <a href="{% url 'laboratorios_form' %}" class="btn-primary"> <!--Url para redirecionar para a página de criação de laboratórios -->
             <i class="fa-solid fa-plus"></i> Novo Laboratório
         </a>
     </div>
@@ -120,27 +120,29 @@
                 <div class="tab">Inativos</div>
             </div>
         </div>
-        {% if laboratorios %}
+        {% if laboratorios %} <!-- Condicional para verificar se há laboratórios cadastrados -->
         <div class="grid">
-            {% for lab in laboratorios %}
+            {% for lab in laboratorios %} <!-- Loop para iterar sobre a lista de laboratórios e exibir cada um em um card -->
             <div class="lab-card">
                 <div class="lab-card-head">
                     <div class="lab-icon"><i class="fa-solid fa-flask-vial"></i></div>
                     <div style="flex:1;">
-                        <div class="lab-name">{{ lab.nome }}</div>
-                        <div class="lab-tipo">{{ lab.tipo }}</div>
+                        <div class="lab-name">{{ lab.nome }}</div> <!-- Exibe o nome do laboratório -->
+                        <div class="lab-tipo">{{ lab.tipo }}</div> <!-- Exibe o tipo do laboratório (ex: Química, Biologia) -->
                     </div>
-                    {% if lab.status == 'Ativo' %}
+                    <!-- Condicional para verificar o status do laboratório e exibir a badge correspondente -->
+                    {% if lab.status == 'Ativo' %} 
                         <span class="badge badge-green">Ativo</span>
                     {% elif lab.status == 'Manutenção' %}
                         <span class="badge badge-yellow">Manutenção</span>
                     {% else %}
                         <span class="badge badge-red">Inativo</span>
                     {% endif %}
+                    <!--Fim da condicional para verificar o status do laboratório-->
                 </div>
                 <div class="lab-body">
-                    <div class="info-row"><i class="fa-solid fa-location-dot"></i> {{ lab.localizacao }}</div>
-                    <div class="info-row"><i class="fa-solid fa-ruler-combined"></i> {{ lab.area }} m²</div>
+                    <div class="info-row"><i class="fa-solid fa-location-dot"></i> {{ lab.localizacao }}</div> <!-- Exibe a localização do laboratório -->
+                    <div class="info-row"><i class="fa-solid fa-ruler-combined"></i> {{ lab.area }} m²</div> <!-- Exibe a área do laboratório em metros quadrados -->
                 </div>
                 <div class="lab-footer">
                     <a href="" class="btn-edit"> <!--Url para redirecionar para a página de edição de laboratório -->

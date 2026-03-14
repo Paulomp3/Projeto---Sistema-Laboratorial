@@ -32,21 +32,21 @@ def laboratorios_listar(request):
             lab = Laboratorios.objects.all() # Consulta para obter todos os laboratórios do banco de dados
             return render(request, 'pages/Laboratorios/listar.html', {'laboratorios': lab}) # Renderiza a página de listagem de laboratórios, passando os laboratórios como contexto
 def laboratorios_form(request):
-    match request.method:
-        case 'GET':   
+
+    match request.method: # Match para verificar o método HTTP da requisição
+        case 'GET':  # Se for uma requisição GET, renderiza o formulário para criar um novo laboratório
             return render(request, 'pages/Laboratorios/form.html')
-        case 'POST':
+        case 'POST': # Se for uma requisição POST, processa os dados enviados pelo formulário para criar um novo laboratório
            nome = request.POST.get('nome')
            tipo = request.POST.get('tipo')
            localizacao = request.POST.get('localizacao')
            area  = request.POST.get('area')
            status = request.POST.get('status')
 
-           lab = Laboratorios(nome=nome, tipo=tipo, localizacao=localizacao, area=area, status=status)
-           lab.save()
-           return redirect('laboratorios_listar')
-
-                
+           lab = Laboratorios(nome=nome, tipo=tipo, localizacao=localizacao, area=area, status=status)# Cria uma nova instância do modelo Laboratorios com os dados obtidos do formulário
+           lab.save() 
+           return redirect('laboratorios_listar') # Redireciona para a página de listagem de laboratórios após criar um novo laboratório
+               
 # ----- CRUD DE LABORATORIOS - FIM -----      
 def agendamentos(request):
     return render(request, 'pages/Agendamentos/agendamentos.html')
