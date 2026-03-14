@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Permissoes(models.Model):
+class Permissoes(models.Model): # Não precisa de Crud
     id_permissoes = models.AutoField(db_column='ID_Permissoes', primary_key=True)
     permissao = models.CharField(db_column='Permissao', max_length=150)
     class Meta:
@@ -11,7 +11,7 @@ class Permissoes(models.Model):
         
 
 
-class Usuarios(models.Model):
+class Usuarios(models.Model): # Verificar se precisa de CRUD, pois o sistema tem apenas um usuário admin
     id_usuarios = models.AutoField(db_column='ID_Usuarios', primary_key=True)
     nome = models.CharField(db_column='Nome', max_length=200)
     email = models.CharField(db_column='Email', unique=True, max_length=200)
@@ -41,7 +41,7 @@ class Laboratorios(models.Model): # CRUD DE LABORATORIOS CONCLUIDO
         return self.nome
 
 
-class Agendamentos(models.Model):
+class Agendamentos(models.Model): # 
     id_agendamentos = models.AutoField(db_column='ID_Agendamentos', primary_key=True)
     id_usuarios = models.ForeignKey(Usuarios, models.DO_NOTHING, db_column='ID_Usuarios')
     id_laboratorio = models.ForeignKey(Laboratorios, models.DO_NOTHING, db_column='ID_Laboratorio')

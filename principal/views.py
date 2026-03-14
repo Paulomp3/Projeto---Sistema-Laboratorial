@@ -30,13 +30,25 @@ def Equipamentos(request):
             materiais = Material.objects.all()
             return render(request, 'pages/Materiais/equipamentos.html', {'materiais': materiais})
 def Consumiveis(request):
-    return render(request, 'pages/Materiais/consumiveis.html')
+    match request.method:
+        case 'GET':
+            materiais = Material.objects.all()
+            return render(request, 'pages/Materiais/consumiveis.html', {'materiais': materiais})
 def Reagentes(request):
-    return render(request, 'pages/Materiais/reagentes.html')
+    match request.method:
+        case 'GET':
+            materiais = Material.objects.all()
+            return render(request, 'pages/Materiais/reagentes.html', {'materiais': materiais})
 def Vidrarias(request):
-    return render(request, 'pages/Materiais/vidrarias.html')
+    match request.method:
+        case 'GET':
+            materiais = Material.objects.all()
+            return render(request, 'pages/Materiais/vidrarias.html', {'materiais': materiais})
 def Epis(request):
-    return render(request, 'pages/Materiais/epis.html')
+    match request.method:
+        case 'GET':
+            materiais = Material.objects.all()
+            return render(request, 'pages/Materiais/epis.html', {'materiais': materiais})
 
 # ---- CRUD DE MATERIAIS - FIM ----
 
