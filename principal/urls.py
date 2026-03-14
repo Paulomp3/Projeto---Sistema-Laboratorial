@@ -18,7 +18,7 @@ urlpatterns = [
     path('emprestimo_interno/', views.emprestimo_interno, name='emprestimo_interno'),
     path('busca_metodologias/', views.busca_metodologias, name='busca_metodologias'),
     # ----- CRUD DE MATERIAIS -----
-    path('cadastro/', views.Cadastro, name='cadastro'),
+    path('cadastro/', views.material_cadastro, name='cadastro'),
     path('equipamentos/', views.Equipamentos, name='inventario_equipamentos'),
     path('consumiveis/', views.Consumiveis, name='inventario_consumiveis'),
     path('reagentes/', views.Reagentes, name='inventario_reagentes'),

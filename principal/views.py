@@ -1,3 +1,5 @@
+from unittest import case
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
@@ -8,10 +10,25 @@ def login(request):
 def busca_metodologias(request):
     return render(request, 'pages/Metodologias/busca_metodologias.html')
  # ---- CRUD DE MATERIAIS ----
-def Cadastro(request):
-    return render(request, 'pages/Materiais/cadastro.html')
+def material_cadastro(request):
+    match request.method:
+        case 'GET':
+            return render(request, 'pages/Materiais/cadastro.html')
+        case 'POST':
+            nome = request.POST.get('nome')
+            fabricante = request.POST.get('fabricante')
+            tipo = request.POST.get('tipo')
+            status = request.POST.get('status')
+
+            materiais = Material(nome=nome, fabricante=fabricante, tipo=tipo, status=status)
+            materiais.save()
+            return redirect('cadastro')
+
 def Equipamentos(request):
-    return render(request, 'pages/Materiais/equipamentos.html')
+    match request.method:
+        case 'GET':
+            materiais = Material.objects.all()
+            return render(request, 'pages/Materiais/equipamentos.html', {'materiais': materiais})
 def Consumiveis(request):
     return render(request, 'pages/Materiais/consumiveis.html')
 def Reagentes(request):
