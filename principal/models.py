@@ -27,7 +27,7 @@ class Usuarios(models.Model):
         return self.nome
 
 
-class Laboratorios(models.Model):
+class Laboratorios(models.Model): # CRUD DE LABORATORIOS CONCLUIDO
     id_laboratorios = models.AutoField(db_column='ID_Laboratorios', primary_key=True)
     nome = models.CharField(db_column='Nome', max_length=150, blank=True, null=True)
     tipo = models.CharField(db_column='Tipo', max_length=150, blank=True, null=True)

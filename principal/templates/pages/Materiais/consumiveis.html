@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equipamentos — LabSystem IFPA</title>
+    <title>Consumíveis — LabSystem IFPA</title>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
@@ -15,9 +15,9 @@
         .brand-icon{width:32px;height:32px;background:#4a9854;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px}
         .brand-name{font-size:13px;font-weight:700;color:#fff}
         .brand-sub{font-size:10px;color:#6ab874;letter-spacing:.5px;text-transform:uppercase;margin-top:3px;padding-left:42px}
-        nav{flex:1;padding:10px 0}
+        nav{flex:1;padding:10px 0;overflow-y:auto}
         .nav-label{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#6ab874;padding:12px 18px 5px}
-        .nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;color:rgba(255,255,255,.6);font-size:13px;font-weight:500;cursor:pointer;border-left:3px solid transparent}
+        .nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;color:rgba(255,255,255,.6);font-size:13px;font-weight:500;cursor:pointer;border-left:3px solid transparent;text-decoration:none}
         .nav-item.active{background:rgba(74,152,84,.18);color:#fff;border-left-color:#6ab874}
         .nav-item i{width:16px;text-align:center;font-size:13px}
         .nav-sub .nav-item{padding:7px 18px 7px 32px;font-size:12px;border-left:none}
@@ -29,10 +29,9 @@
         .user-name{font-size:12px;font-weight:600;color:#fff}
         .user-role{font-size:10px;color:#6ab874}
         .main{margin-left:230px;flex:1}
-        .page-header{background:#fff;padding:18px 26px;border-bottom:1px solid #e5e7eb;display:flex;align-items:flex-start;justify-content:space-between}
+        .page-header{background:#fff;padding:18px 26px;border-bottom:1px solid #e5e7eb}
         .page-header h1{font-size:19px;font-weight:700}
         .breadcrumb{font-size:12px;color:#6b7280;margin-top:2px}
-        .btn-primary{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;background:#2d6a35;color:#fff;border:none;border-radius:7px;font-family:'Sora',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
         .body{padding:22px 26px}
         .card{background:#fff;border:1px solid #e5e7eb;border-radius:10px}
         .filter-row{display:flex;align-items:center;gap:8px;padding:12px 18px;border-bottom:1px solid #e5e7eb;flex-wrap:wrap}
@@ -49,7 +48,11 @@
         .badge-yellow{background:#fef3c7;color:#92400e}
         .badge-red{background:#fde8e8;color:#9b1c1c}
         .mat-cell{display:flex;align-items:center;gap:8px}
-        .mat-icon{width:30px;height:30px;background:#e8f5ea;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#2d6a35;font-size:13px;flex-shrink:0}
+        .mat-icon{width:30px;height:30px;background:#dbeafe;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#1e40af;font-size:13px;flex-shrink:0}
+        .actions-cell{display:flex;gap:6px}
+        .btn-edit{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;background:#e8f5ea;color:#1e4a25;border:none;border-radius:5px;font-family:'Sora',sans-serif;font-size:11px;font-weight:600;cursor:pointer;text-decoration:none}
+        .btn-delete{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;background:#fde8e8;color:#9b1c1c;border:none;border-radius:5px;font-family:'Sora',sans-serif;font-size:11px;font-weight:600;cursor:pointer;text-decoration:none}
+        .empty{padding:40px;text-align:center;color:#9ca3af;font-size:13px}
     </style>
 </head>
 <body>
@@ -57,9 +60,9 @@
     <div class="brand">
         <div class="brand-top">
             <div class="brand-icon"><i class="fa-solid fa-flask"></i></div>
-            <span class="brand-name">LabSystem</span>
+            <span class="brand-name">Sistema Laboratorial</span>
         </div>
-        <div class="brand-sub">IFPA · Itaituba</div>
+        <div class="brand-sub">IFPA - Itaituba</div>
     </div>
     <nav>
         <div class="nav-item"><i class="fa-solid fa-gauge-high"></i> Dashboard</div>
@@ -70,7 +73,7 @@
         <div class="nav-label">Inventário</div>
         <div class="nav-item active"><i class="fa-solid fa-plus-circle"></i> Cadastro</div>
         <div class="nav-sub">
-            <div class="nav-item active-sub">Equipamentos</div>
+            <div class="nav-item active-sub">Consumíveis</div>
             <div class="nav-item">Vidrarias</div>
             <div class="nav-item">Reagentes</div>
             <div class="nav-item">EPIs</div>
@@ -85,11 +88,8 @@
 
 <main class="main">
     <div class="page-header">
-        <div>
-            <h1>Equipamentos</h1>
-            <div class="breadcrumb">Inventário › Equipamentos</div>
-        </div>
-        <button class="btn-primary"><i class="fa-solid fa-plus"></i> Novo Cadastro</button>
+        <h1>Consumíveis</h1>
+        <div class="breadcrumb">Inventário › Consumíveis</div>
     </div>
     <div class="body">
         <div class="card">
@@ -98,86 +98,65 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" placeholder="Buscar equipamento...">
                 </div>
-                <select><option>Todos os laboratórios</option><option>Lab I – Informática</option><option>Lab II – Química</option><option>Lab III – Biologia</option><option>Lab IV – Física</option></select>
-                <select><option>Todos os status</option><option>Bom estado</option><option>Danificado</option><option>Em manutenção</option></select>
+                <select>
+                    <option value="">Todos os status</option>
+                    <option>Bom estado</option>
+                    <option>Danificado</option>
+                    <option>Em manutenção</option>
+                    <option>Descartado</option>
+                </select>
             </div>
             <table>
                 <thead>
                     <tr>
+                        <th>#</th>
                         <th>Material</th>
-                        <th>Patrimônio</th>
                         <th>Fabricante</th>
-                        <th>Laboratório</th>
-                        <th>Quantidade</th>
                         <th>Status</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for material in materiais %}
                     <tr>
+                        <td>{{ material.id_material }}</td>
                         <td>
                             <div class="mat-cell">
-                                <div class="mat-icon"><i class="fa-solid fa-microscope"></i></div>
-                                Microscópio Óptico Binocular
+                                <div class="mat-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+                                {{ material.nome }}
                             </div>
                         </td>
-                        <td>000123/2023</td>
-                        <td>Nikon</td>
-                        <td>Lab II – Biologia</td>
-                        <td>3</td>
-                        <td><span class="badge badge-green">Bom estado</span></td>
-                    </tr>
-                    <tr>
+                        <td>{{ material.fabricante }}</td>
                         <td>
-                            <div class="mat-cell">
-                                <div class="mat-icon"><i class="fa-solid fa-temperature-half"></i></div>
-                                Termômetro Digital
-                            </div>
+                            {% if material.status == 'Bom estado' %}
+                                <span class="badge badge-green">Bom estado</span>
+                            {% elif material.status == 'Em manutenção' %}
+                                <span class="badge badge-yellow">Em manutenção</span>
+                            {% else %}
+                                <span class="badge badge-red">{{ material.status }}</span>
+                            {% endif %}
                         </td>
-                        <td>000145/2023</td>
-                        <td>Incoterm</td>
-                        <td>Lab IV – Física</td>
-                        <td>5</td>
-                        <td><span class="badge badge-green">Bom estado</span></td>
-                    </tr>
-                    <tr>
                         <td>
-                            <div class="mat-cell">
-                                <div class="mat-icon"><i class="fa-solid fa-weight-scale"></i></div>
-                                Balança Analítica
+                            <div class="actions-cell">
+                                <a href="{% url 'material_editar' material.id_material %}" class="btn-edit">
+                                    <i class="fa-solid fa-pen"></i> Editar
+                                </a>
+                                <a href="{% url 'material_deletar' material.id_material %}" class="btn-delete">
+                                    <i class="fa-solid fa-trash"></i> Deletar
+                                </a>
                             </div>
                         </td>
-                        <td>000067/2022</td>
-                        <td>Shimadzu</td>
-                        <td>Lab II – Química</td>
-                        <td>2</td>
-                        <td><span class="badge badge-yellow">Em manutenção</span></td>
                     </tr>
+                    {% empty %}
                     <tr>
-                        <td>
-                            <div class="mat-cell">
-                                <div class="mat-icon"><i class="fa-solid fa-fan"></i></div>
-                                Centrífuga
+                        <td colspan="5">
+                            <div class="empty">
+                                <i class="fa-solid fa-boxes-stacked" style="font-size:28px;margin-bottom:8px;display:block"></i>
+                                Nenhum equipamento cadastrado ainda.
                             </div>
                         </td>
-                        <td>000089/2021</td>
-                        <td>Eppendorf</td>
-                        <td>Lab III – Biologia</td>
-                        <td>1</td>
-                        <td><span class="badge badge-red">Danificado</span></td>
                     </tr>
-                    <tr>
-                        <td>
-                            <div class="mat-cell">
-                                <div class="mat-icon"><i class="fa-solid fa-fire-burner"></i></div>
-                                Bico de Bunsen
-                            </div>
-                        </td>
-                        <td>000201/2024</td>
-                        <td>Quimis</td>
-                        <td>Lab II – Química</td>
-                        <td>8</td>
-                        <td><span class="badge badge-green">Bom estado</span></td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

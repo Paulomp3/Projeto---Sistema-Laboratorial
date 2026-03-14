@@ -11,7 +11,17 @@ def busca_metodologias(request):
 def Cadastro(request):
     return render(request, 'pages/Materiais/cadastro.html')
 def Equipamentos(request):
-    return render(request, 'pages/Materiais/inventario_equipamentos.html')
+    return render(request, 'pages/Materiais/equipamentos.html')
+def Consumiveis(request):
+    return render(request, 'pages/Materiais/consumiveis.html')
+def Reagentes(request):
+    return render(request, 'pages/Materiais/reagentes.html')
+def Vidrarias(request):
+    return render(request, 'pages/Materiais/vidrarias.html')
+def Epis(request):
+    return render(request, 'pages/Materiais/epis.html')
+
+# ---- CRUD DE MATERIAIS - FIM ----
 
 def dashboard(request):
     return render(request, 'pages/Dashboard/dashboard.html')

@@ -15,13 +15,15 @@
         .brand-icon{width:32px;height:32px;background:#4a9854;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px}
         .brand-name{font-size:13px;font-weight:700;color:#fff}
         .brand-sub{font-size:10px;color:#6ab874;letter-spacing:.5px;text-transform:uppercase;margin-top:3px;padding-left:42px}
-        nav{flex:1;padding:10px 0}
+        nav{flex:1;padding:10px 0;overflow-y:auto}
         .nav-label{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#6ab874;padding:12px 18px 5px}
-        .nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;color:rgba(255,255,255,.6);font-size:13px;font-weight:500;cursor:pointer;border-left:3px solid transparent}
+        .nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;color:rgba(255,255,255,.6);font-size:13px;font-weight:500;cursor:pointer;border-left:3px solid transparent;text-decoration:none}
         .nav-item.active{background:rgba(74,152,84,.18);color:#fff;border-left-color:#6ab874}
         .nav-item i{width:16px;text-align:center;font-size:13px}
         .nav-sub .nav-item{padding:7px 18px 7px 32px;font-size:12px;border-left:none}
         .nav-sub .nav-item::before{content:'';width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.3);flex-shrink:0}
+        .nav-sub .nav-item.active-sub{color:#fff;font-weight:700}
+        .nav-sub .nav-item.active-sub::before{background:#6ab874}
         .user-area{padding:14px 18px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px}
         .avatar{width:32px;height:32px;border-radius:50%;background:#2d6a35;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0}
         .user-name{font-size:12px;font-weight:600;color:#fff}
@@ -31,7 +33,9 @@
         .page-header h1{font-size:19px;font-weight:700}
         .breadcrumb{font-size:12px;color:#6b7280;margin-top:2px}
         .body{padding:22px 26px}
-        .tipo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:22px}
+        .card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:24px;margin-bottom:18px}
+        .section-title{font-size:13px;font-weight:700;color:#1e4a25;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #e8f5ea;display:flex;align-items:center;gap:8px}
+        .tipo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:6px}
         .tipo-card{background:#fff;border:2px solid #e5e7eb;border-radius:10px;padding:16px 10px;text-align:center;cursor:pointer;transition:all .15s}
         .tipo-card.selected{border-color:#4a9854;background:#e8f5ea}
         .tipo-card:hover{border-color:#4a9854}
@@ -42,16 +46,13 @@
         .ti-yellow{background:#fef3c7;color:#92400e}
         .ti-orange{background:#ffedd5;color:#c2410c}
         .tipo-label{font-size:12px;font-weight:700;color:#3d4250}
-        .card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:22px 24px;margin-bottom:18px}
-        .section-title{font-size:13px;font-weight:700;color:#1e4a25;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #e8f5ea;display:flex;align-items:center;gap:8px}
         .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-        .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
         .form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
         label{font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.5px}
         input,select{padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:7px;font-family:'Sora',sans-serif;font-size:13px;color:#1a1d23;outline:none;background:#fff}
         input:focus,select:focus{border-color:#4a9854}
-        .actions{display:flex;gap:10px;justify-content:flex-end}
-        .btn{padding:9px 18px;border-radius:7px;font-family:'Sora',sans-serif;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #e5e7eb;background:#fff;color:#3d4250}
+        .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
+        .btn{padding:9px 18px;border-radius:7px;font-family:'Sora',sans-serif;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #e5e7eb;background:#fff;color:#3d4250;text-decoration:none;display:inline-flex;align-items:center;gap:7px}
         .btn-primary{background:#2d6a35;color:#fff;border-color:#2d6a35}
     </style>
 </head>
@@ -60,9 +61,9 @@
     <div class="brand">
         <div class="brand-top">
             <div class="brand-icon"><i class="fa-solid fa-flask"></i></div>
-            <span class="brand-name">LabSystem</span>
+            <span class="brand-name">Sistema Laboratorial</span>
         </div>
-        <div class="brand-sub">IFPA · Itaituba</div>
+        <div class="brand-sub">IFPA - Itaituba</div>
     </div>
     <nav>
         <div class="nav-item"><i class="fa-solid fa-gauge-high"></i> Dashboard</div>
@@ -93,7 +94,6 @@
     </div>
     <div class="body">
 
-        <!-- TIPO SELECTOR -->
         <div class="card">
             <div class="section-title"><i class="fa-solid fa-tag"></i> Tipo de Material</div>
             <div class="tipo-grid">
@@ -120,51 +120,40 @@
             </div>
         </div>
 
-        <!-- CAMPOS GERAIS -->
         <div class="card">
-            <div class="section-title"><i class="fa-solid fa-circle-info"></i> Dados Gerais</div>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label>Nome do Material</label>
-                    <input type="text" placeholder="Ex: Microscópio Óptico Binocular">
+            <div class="section-title"><i class="fa-solid fa-circle-info"></i> Dados do Material</div>
+            <form action="" method="POST"> <!-- Formulário para cadastro de material -->
+                {% csrf_token %}
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="nome">Nome</label>
+                        <input type="text" id="nome" name="nome" placeholder="Ex: Microscópio Óptico Binocular">
+                    </div>
+                    <div class="form-group">
+                        <label for="fabricante">Fabricante</label>
+                        <input type="text" id="fabricante" name="fabricante" placeholder="Ex: Nikon">
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo">Tipo</label>
+                        <input type="text" id="tipo" name="tipo" placeholder="Ex: Equipamento, Vidraria...">
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" name="status">
+                            <option value="Bom estado">Bom estado</option>
+                            <option value="Danificado">Danificado</option>
+                            <option value="Em manutenção">Em manutenção</option>
+                            <option value="Descartado">Descartado</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Status</label>
-                    <select><option>Bom estado</option><option>Danificado</option><option>Em manutenção</option><option>Descartado</option></select>
+                <div class="actions">
+                    <a href="" class="btn">Cancelar</a> <!-- Link para cancelar o cadastro e voltar para a página anterior -->
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> Cadastrar
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label>Laboratório</label>
-                    <select><option>Selecione</option><option>Lab I – Informática</option><option>Lab II – Química</option><option>Lab III – Biologia</option><option>Lab IV – Física</option></select>
-                </div>
-                <div class="form-group">
-                    <label>Quantidade</label>
-                    <input type="number" placeholder="0" min="0">
-                </div>
-            </div>
-        </div>
-
-        <!-- CAMPOS ESPECÍFICOS DE EQUIPAMENTO -->
-        <div class="card">
-            <div class="section-title"><i class="fa-solid fa-microscope"></i> Dados do Equipamento</div>
-            <div class="grid-3">
-                <div class="form-group">
-                    <label>Número de Patrimônio</label>
-                    <input type="text" placeholder="Ex: 000123/2023">
-                </div>
-                <div class="form-group">
-                    <label>Fabricante</label>
-                    <input type="text" placeholder="Ex: Nikon">
-                </div>
-                <div class="form-group">
-                    <label>Ano de Aquisição</label>
-                    <input type="number" placeholder="2023">
-                </div>
-            </div>
-        </div>
-
-        <div class="actions">
-            <button class="btn">Cancelar</button>
-            <button class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar Material</button>
+            </form>
         </div>
     </div>
 </main>

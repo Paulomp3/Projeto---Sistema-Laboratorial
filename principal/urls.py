@@ -20,6 +20,10 @@ urlpatterns = [
     # ----- CRUD DE MATERIAIS -----
     path('cadastro/', views.Cadastro, name='cadastro'),
     path('equipamentos/', views.Equipamentos, name='inventario_equipamentos'),
+    path('consumiveis/', views.Consumiveis, name='inventario_consumiveis'),
+    path('reagentes/', views.Reagentes, name='inventario_reagentes'),
+    path('vidrarias/', views.Vidrarias, name='inventario_vidrarias'),
+    path('epis/', views.Epis, name='inventario_epis'),  
     # ----- CRUD DE MATERIAIS - FIM -----
     
 ]
