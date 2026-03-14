@@ -46,7 +46,35 @@ def laboratorios_form(request):
            lab = Laboratorios(nome=nome, tipo=tipo, localizacao=localizacao, area=area, status=status)# Cria uma nova instância do modelo Laboratorios com os dados obtidos do formulário
            lab.save() 
            return redirect('laboratorios_listar') # Redireciona para a página de listagem de laboratórios após criar um novo laboratório
-               
+def laboratorios_delete(request, id):
+    match request.method: # Match para verificar o método HTTP da requisição
+        case 'GET': # Se for uma requisição POST, processa a exclusão do laboratório com base no ID fornecido
+          lab = Laboratorios.objects.get(id_laboratorios=id) 
+          return render(request, 'pages/Laboratorios/delete.html', {'lab': lab}) # Renderiza a página de confirmação de exclusão, passando o ID do laboratório como contexto
+        case 'POST':
+            lab = Laboratorios.objects.get(id_laboratorios=id) # Consulta para obter o laboratório específico com base no ID fornecido
+            lab.delete() # Exclui o laboratório do banco de dados
+            return redirect('laboratorios_listar') # Redireciona para a página de listagem de laboratórios após excluir o laboratório      
+def laboratorios_editar(request, id):
+    match request.method:
+        case 'GET': # Se for uma requisição GET, renderiza o formulário para editar um laboratório existente, preenchendo os campos do formulário com os dados atuais do laboratório
+            lab = Laboratorios.objects.get(id_laboratorios=id) # Consulta para obter o laboratório específico com base no ID fornecido
+            return render(request, 'pages/Laboratorios/form.html', {'lab': lab}) # Renderiza a página de formulário para edição, passando o laboratório como contexto para preencher os campos do formulário com os dados existentes
+        case 'POST': # Se for uma requisição POST, processa os dados enviados pelo formulário para editar o laboratório existente
+            lab = Laboratorios.objects.get(id_laboratorios=id) 
+            nome = request.POST.get('nome')
+            tipo = request.POST.get('tipo')
+            localizacao = request.POST.get('localizacao')
+            area  = request.POST.get('area')
+            status = request.POST.get('status')
+            # Atualiza os campos do laboratório com os novos dados obtidos do formulário e salva as alterações no banco de dados
+            lab.nome = nome 
+            lab.tipo = tipo
+            lab.localizacao = localizacao
+            lab.area = area
+            lab.status = status
+            lab.save()
+            return redirect('laboratorios_listar')
 # ----- CRUD DE LABORATORIOS - FIM -----      
 def agendamentos(request):
     return render(request, 'pages/Agendamentos/agendamentos.html')

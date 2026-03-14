@@ -145,10 +145,10 @@
                     <div class="info-row"><i class="fa-solid fa-ruler-combined"></i> {{ lab.area }} m²</div> <!-- Exibe a área do laboratório em metros quadrados -->
                 </div>
                 <div class="lab-footer">
-                    <a href="" class="btn-edit"> <!--Url para redirecionar para a página de edição de laboratório -->
+                    <a href="{% url "laboratorios_editar" lab.id_laboratorios %}" class="btn-edit"> <!--Url para redirecionar para a página de edição de laboratório -->
                         <i class="fa-solid fa-pen"></i> Editar
                     </a>
-                    <a href="" class="btn-delete"> <!--Url para redirecionar para a página de deleção de laboratório -->
+                    <a href="{% url "laboratorios_delete" lab.id_laboratorios %}" class="btn-delete"> <!--Url para redirecionar para a página de deleção de laboratório -->
                         <i class="fa-solid fa-trash"></i> Deletar
                     </a>
                 </div>
