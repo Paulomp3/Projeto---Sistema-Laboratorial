@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if ag %}Editar{% else %}Novo{% endif %} Agendamento — LabSystem IFPA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Sora',sans-serif;background:#f3f4f6;color:#1a1d23;font-size:14px;display:flex;min-height:100vh}
+        .sidebar{width:230px;background:#1a3a1f;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh}
+        .brand{padding:18px;border-bottom:1px solid rgba(255,255,255,.08)}
+        .brand-top{display:flex;align-items:center;gap:10px}
+        .brand-icon{width:32px;height:32px;background:#4a9854;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px}
+        .brand-name{font-size:13px;font-weight:700;color:#fff}
+        .brand-sub{font-size:10px;color:#6ab874;letter-spacing:.5px;text-transform:uppercase;margin-top:3px;padding-left:42px}
+        nav{flex:1;padding:10px 0;overflow-y:auto}
+        .nav-label{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#6ab874;padding:12px 18px 5px}
+        .nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;color:rgba(255,255,255,.6);font-size:13px;font-weight:500;cursor:pointer;border-left:3px solid transparent;text-decoration:none}
+        .nav-item.active{background:rgba(74,152,84,.18);color:#fff;border-left-color:#6ab874}
+        .nav-item i{width:16px;text-align:center;font-size:13px}
+        .nav-sub .nav-item{padding:7px 18px 7px 32px;font-size:12px;border-left:none}
+        .nav-sub .nav-item::before{content:'';width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.3);flex-shrink:0}
+        .user-area{padding:14px 18px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px}
+        .avatar{width:32px;height:32px;border-radius:50%;background:#2d6a35;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0}
+        .user-name{font-size:12px;font-weight:600;color:#fff}
+        .user-role{font-size:10px;color:#6ab874}
+        .main{margin-left:230px;flex:1}
+        .page-header{background:#fff;padding:18px 26px;border-bottom:1px solid #e5e7eb}
+        .page-header h1{font-size:19px;font-weight:700}
+        .breadcrumb{font-size:12px;color:#6b7280;margin-top:2px}
+        .body{padding:22px 26px}
+        .card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:24px;margin-bottom:18px}
+        .section-title{font-size:13px;font-weight:700;color:#1e4a25;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #e8f5ea;display:flex;align-items:center;gap:8px}
+        .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+        .form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+        label{font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.5px}
+        input,select,textarea{padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:7px;font-family:'Sora',sans-serif;font-size:13px;color:#1a1d23;outline:none;background:#fff}
+        input:focus,select:focus,textarea:focus{border-color:#4a9854}
+        textarea{resize:vertical;min-height:90px}
+        .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
+        .btn{padding:9px 18px;border-radius:7px;font-family:'Sora',sans-serif;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #e5e7eb;background:#fff;color:#3d4250;text-decoration:none;display:inline-flex;align-items:center;gap:7px}
+        .btn-primary{background:#2d6a35;color:#fff;border-color:#2d6a35}
+        .info-box{background:#e8f5ea;border:1px solid #b7dfbb;border-radius:7px;padding:10px 14px;font-size:12px;color:#1e4a25;display:flex;align-items:flex-start;gap:8px;margin-bottom:18px}
+    </style>
+</head>
+<body>
+<aside class="sidebar">
+    <div class="brand">
+        <div class="brand-top">
+            <div class="brand-icon"><i class="fa-solid fa-flask"></i></div>
+            <span class="brand-name">Sistema Laboratorial</span>
+        </div>
+        <div class="brand-sub">IFPA - Itaituba</div>
+    </div>
+    <nav>
+        <div class="nav-item"><i class="fa-solid fa-gauge-high"></i> Dashboard</div>
+        <div class="nav-item"><i class="fa-solid fa-building"></i> Laboratórios</div>
+        <div class="nav-item active"><i class="fa-solid fa-calendar-days"></i> Agendamentos</div>
+        <div class="nav-item"><i class="fa-solid fa-hand-holding"></i> Empréstimos</div>
+        <div class="nav-item"><i class="fa-solid fa-magnifying-glass-chart"></i> Busca Metodologia</div>
+        <div class="nav-label">Inventário</div>
+        <div class="nav-item"><i class="fa-solid fa-plus-circle"></i> Cadastro</div>
+        <div class="nav-sub">
+            <div class="nav-item">Equipamentos</div>
+            <div class="nav-item">Vidrarias</div>
+            <div class="nav-item">Reagentes</div>
+            <div class="nav-item">EPIs</div>
+            <div class="nav-item">Mat. Consumo</div>
+        </div>
+    </nav>
+    <div class="user-area">
+        <div class="avatar"><i class="fa-solid fa-user"></i></div>
+        <div><div class="user-name">Paulo Silva</div><div class="user-role">Laboratório</div></div>
+    </div>
+</aside>
+
+<main class="main">
+    <div class="page-header">
+        <h1>{% if ag %}Editar Agendamento{% else %}Novo Agendamento{% endif %}</h1>
+        <div class="breadcrumb">Agendamentos › {% if ag %}Editar{% else %}Novo{% endif %}</div>
+    </div>
+    <div class="body">
+
+        <div class="info-box">
+            <i class="fa-solid fa-circle-info" style="margin-top:1px"></i>
+            <span>O agendamento deve ser solicitado com no mínimo <strong>48 horas</strong> de antecedência.</span>
+        </div>
+
+        <div class="card">
+            <div class="section-title"><i class="fa-solid fa-building"></i> Laboratório e Atividade</div>
+            <form action="{% if ag %}{% url 'agendamentos_editar' ag.id_agendamentos %}{% else %}{% url 'agendamentos_form' %}{% endif %}" method="POST">
+                {% csrf_token %}
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="id_laboratorio">Laboratório</label>
+                        <select id="id_laboratorio" name="id_laboratorio">
+                            <option value="">Selecione um laboratório</option>
+                            {% for lab in laboratorios %}
+                            <option value="{{ lab.id_laboratorios }}" {% if ag.id_laboratorio.id_laboratorios == lab.id_laboratorios %}selected{% endif %}>
+                                {{ lab.nome }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_usuarios">Usuário</label>
+                        <select id="id_usuarios" name="id_usuarios">
+                            <option value="">Selecione um usuário</option>
+                            {% for usuario in usuarios %}
+                            <option value="{{ usuario.id_usuarios }}" {% if ag.id_usuarios.id_usuarios == usuario.id_usuarios %}selected{% endif %}>
+                                {{ usuario.nome }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo_de_atividade">Tipo de Atividade</label>
+                        <select id="tipo_de_atividade" name="tipo_de_atividade">
+                            <option value="">Selecione o tipo</option>
+                            <option value="Ensino" {% if ag.tipo_de_atividade == 'Ensino' %}selected{% endif %}>Ensino</option>
+                            <option value="Pesquisa" {% if ag.tipo_de_atividade == 'Pesquisa' %}selected{% endif %}>Pesquisa</option>
+                            <option value="Extensão" {% if ag.tipo_de_atividade == 'Extensão' %}selected{% endif %}>Extensão</option>
+                            <option value="Projeto" {% if ag.tipo_de_atividade == 'Projeto' %}selected{% endif %}>Projeto</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="section-title" style="margin-top:8px"><i class="fa-solid fa-calendar"></i> Data e Horário</div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="data_inicial">Data de Início</label>
+                        <input type="date" id="data_inicial" name="data_inicial" value="{{ ag.data_inicial }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="data_final">Data de Término</label>
+                        <input type="date" id="data_final" name="data_final" value="{{ ag.data_final }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="horario_inicio">Horário de Início</label>
+                        <input type="time" id="horario_inicio" name="horario_inicio" value="{{ ag.horario_inicio }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="horario_final">Horário de Término</label>
+                        <input type="time" id="horario_final" name="horario_final" value="{{ ag.horario_final }}">
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <a href="{% url 'agendamentos_listar' %}" class="btn">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        {% if ag %}Salvar Alterações{% else %}Cadastrar{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+</html>

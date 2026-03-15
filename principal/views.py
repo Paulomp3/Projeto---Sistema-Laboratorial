@@ -6,10 +6,12 @@ from .models import *
 
 def login(request):
     return render(request, 'pages/Login/login.html')
-
+def dashboard(request):
+    return render(request, 'pages/Dashboard/dashboard.html')
 def busca_metodologias(request):
+
     return render(request, 'pages/Metodologias/busca_metodologias.html')
- # ---- CRUD DE MATERIAIS ----
+# ---- CRUD DE MATERIAIS ----
 def material_cadastro(request):
     match request.method:
         case 'GET':
@@ -23,7 +25,6 @@ def material_cadastro(request):
             materiais = Material(nome=nome, fabricante=fabricante, tipo=tipo, status=status)
             materiais.save()
             return redirect('cadastro')
-
 def Equipamentos(request):
     match request.method:
         case 'GET':
@@ -49,28 +50,26 @@ def Epis(request):
         case 'GET':
             materiais = Material.objects.all()
             return render(request, 'pages/Materiais/epis.html', {'materiais': materiais})
-
 # ---- CRUD DE MATERIAIS - FIM ----
 
-def dashboard(request):
-    return render(request, 'pages/Dashboard/dashboard.html')
-
+#----- CRUD DE EMPRESTIMOS ----
 def emprestimo_externo(request):
     return render(request, 'pages/Emprestimos/emprestimo_externo.html')
-
 def emprestimo_interno(request):
     return render(request, 'pages/Emprestimos/emprestimo_interno.html')
-
 def emprestimos(request):
     return render(request, 'pages/Emprestimos/emprestimos.html')
+# ----- CRUD DE EMPRESTIMOS - FIM ----
 
 # ----- CRUD DE LABORATORIOS -----
 def laboratorios_listar(request):
+
     match request.method:
         case 'GET':
             lab = Laboratorios.objects.all() # Consulta para obter todos os laboratórios do banco de dados
             return render(request, 'pages/Laboratorios/listar.html', {'laboratorios': lab}) # Renderiza a página de listagem de laboratórios, passando os laboratórios como contexto
 def laboratorios_form(request):
+
 
     match request.method: # Match para verificar o método HTTP da requisição
         case 'GET':  # Se for uma requisição GET, renderiza o formulário para criar um novo laboratório
@@ -86,6 +85,7 @@ def laboratorios_form(request):
            lab.save() 
            return redirect('laboratorios_listar') # Redireciona para a página de listagem de laboratórios após criar um novo laboratório
 def laboratorios_delete(request, id):
+
     match request.method: # Match para verificar o método HTTP da requisição
         case 'GET': # Se for uma requisição POST, processa a exclusão do laboratório com base no ID fornecido
           lab = Laboratorios.objects.get(id_laboratorios=id) 
@@ -115,9 +115,3 @@ def laboratorios_editar(request, id):
             lab.save()
             return redirect('laboratorios_listar')
 # ----- CRUD DE LABORATORIOS - FIM -----      
-def agendamentos(request):
-    return render(request, 'pages/Agendamentos/agendamentos.html')
-
-def novo_agendamento(request):
-    return render(request, 'pages/Agendamentos/novo_agendamento.html')
-
