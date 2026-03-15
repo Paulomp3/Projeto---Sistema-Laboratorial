@@ -90,7 +90,7 @@
             <h1>Agendamentos</h1>
             <div class="breadcrumb">Reservas de laboratórios do campus</div>
         </div>
-        <a href="{% url 'agendamentos_form' %}" class="btn-primary">
+        <a href="{% url "agendamentos_form" %}" class="btn-primary"> <!--Pagina para redirecionar a criação de novos agendamentos-->
             <i class="fa-solid fa-plus"></i> Novo Agendamento
         </a>
     </div>
@@ -145,10 +145,10 @@
                         <td>{{ ag.horario_inicio }} – {{ ag.horario_final }}</td>
                         <td>
                             <div class="actions-cell">
-                                <a href="{% url 'agendamentos_editar' ag.id_agendamentos %}" class="btn-edit">
+                                <a href="{% url "agendamentos_editar" ag.id_agendamentos %}" class="btn-edit"> <!--Pagina para redirecionar a edição dos agendamentos-->
                                     <i class="fa-solid fa-pen"></i> Editar
                                 </a>
-                                <a href="{% url 'agendamentos_deletar' ag.id_agendamentos %}" class="btn-delete">
+                                <a href="{% url "agendamentos_delete" ag.id_agendamentos %}" class="btn-delete"> <!--Pagina para redirecionar a exclusão dos agendamentos-->
                                     <i class="fa-solid fa-trash"></i> Deletar
                                 </a>
                             </div>

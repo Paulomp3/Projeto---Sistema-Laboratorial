@@ -50,6 +50,7 @@ class Agendamentos(models.Model): #
     data_final = models.DateField(db_column='Data_Final', blank=True, null=True)
     horario_inicio = models.TimeField(db_column='Horario_Inicio', blank=True, null=True)
     horario_final = models.TimeField(db_column='Horario_Final', blank=True, null=True)
+    descricao_atividade = models.TextField(db_column='Descricao_Atividade', blank=True, null=True)
 
     class Meta:
         db_table = 'Agendamentos'

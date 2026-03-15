@@ -85,7 +85,6 @@ def laboratorios_form(request):
            lab.save() 
            return redirect('laboratorios_listar') # Redireciona para a página de listagem de laboratórios após criar um novo laboratório
 def laboratorios_delete(request, id):
-
     match request.method: # Match para verificar o método HTTP da requisição
         case 'GET': # Se for uma requisição POST, processa a exclusão do laboratório com base no ID fornecido
           lab = Laboratorios.objects.get(id_laboratorios=id) 
@@ -115,3 +114,86 @@ def laboratorios_editar(request, id):
             lab.save()
             return redirect('laboratorios_listar')
 # ----- CRUD DE LABORATORIOS - FIM -----      
+
+# ----- CRUD DE AGENDAMENTOS -----
+def agendamentos_listar(request):
+    match request.method:
+        case 'GET':
+            agendamentos = Agendamentos.objects.all()
+            return render(request, 'pages/Agendamentos/agendamentos_listar.html',{'agendamentos': agendamentos})
+        
+def agendamentos_form(request):
+    match request.method:
+        case 'GET': # Se for uma requisição GET, renderiza o formulário para criar um novo agendamento
+            laboratorios = Laboratorios.objects.all() # Consulta para obter todos os laboratórios do banco de dados
+            usuarios = Usuarios.objects.all() # Consulta para obter todos os usuários do banco de dados
+            return render(request, 'pages/Agendamentos/agendamentos_form.html', {'laboratorios': laboratorios, 'usuarios': usuarios})
+        case 'POST': # Se for uma requisição POST, processa os dados enviados pelo formulário para criar um novo agendamento
+            id_laboratorio = request.POST.get('id_laboratorios')
+            id_usuario = request.POST.get('id_usuarios')
+            tipo_de_atividade = request.POST.get('tipo_de_atividade')
+            descricao_atividade = request.POST.get('descricao_atividade')
+            data_inicial = request.POST.get('data_inicial')
+            data_final = request.POST.get('data_final')
+            horario_inicio = request.POST.get('horario_inicio')
+            horario_final = request.POST.get('horario_final')
+
+            laboratorios = Laboratorios.objects.get(id_laboratorios=id_laboratorio) # Consulta para obter o laboratório específico com base no ID fornecido
+            usuarios = Usuarios.objects.get(id_usuarios=id_usuario) # Consulta para obter o usuário específico com base no ID fornecido
+            
+            agendamento = Agendamentos(
+                id_laboratorio=laboratorios, 
+                id_usuarios=usuarios, 
+                tipo_de_atividade=tipo_de_atividade, 
+                descricao_atividade=descricao_atividade, 
+                data_inicial=data_inicial, 
+                data_final=data_final, 
+                horario_inicio=horario_inicio, 
+                horario_final=horario_final
+            )
+            agendamento.save()
+            return redirect('agendamentos_listar') # Redireciona para a página de listagem de agendamentos após criar um novo agendamento
+     
+def agendamentos_delete(request,id):
+    match request.method:
+        case 'GET':
+            agendamentos = Agendamentos.objects.get(id_agendamentos = id)
+            return render(request, 'pages/Agendamentos/agendamentos_delete.html', {'ag': agendamentos})
+        case 'POST':
+            agendamentos = Agendamentos.objects.get(id_agendamentos = id)
+            agendamentos.delete()
+            return redirect(agendamentos_listar)
+
+def agendamentos_editar(request, id):
+    match request.method:
+        case 'GET':
+            agendamentos = Agendamentos.objects.get(id_agendamentos = id)
+            laboratorios = Laboratorios.objects.all()
+            usuarios = Usuarios.objects.all()
+            return render(request, 'pages/Agendamentos/agendamentos_form.html', {'ag': agendamentos , 'laboratorios': laboratorios , 'usuarios': usuarios})
+        case 'POST': 
+            agendamentos = Agendamentos.objects.get(id_agendamentos =id)
+            
+            id_laboratorio = request.POST.get('id_laboratorios')
+            id_usuario = request.POST.get('id_usuarios')
+            tipo_de_atividade = request.POST.get('tipo_de_atividade')
+            descricao_atividade = request.POST.get('descricao_atividade')
+            data_inicial = request.POST.get('data_inicial')
+            data_final = request.POST.get('data_final')
+            horario_inicio = request.POST.get('horario_inicio')
+            horario_final = request.POST.get('horario_final')
+             
+            agendamentos.id_laboratorio = Laboratorios.objects.get(id_laboratorios = id_laboratorio)
+            agendamentos.id_usuarios = Usuarios.objects.get(id_usuarios = id_usuario )
+            agendamentos.tipo_de_atividade = tipo_de_atividade
+            agendamentos.descricao_atividade = descricao_atividade
+            agendamentos.data_inicial = data_inicial
+            agendamentos.data_final = data_final
+            agendamentos.horario_inicio = horario_inicio
+            agendamentos.horario_final = horario_final
+
+            agendamentos.save()
+            return redirect('agendamentos_listar')
+
+# -------- CRUD DE AGENDAMENTOS - FIM - ----
+

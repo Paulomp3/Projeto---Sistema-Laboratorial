@@ -28,6 +28,13 @@ urlpatterns = [
     path('epis/', views.Epis, name='inventario_epis'),  
     # ----- CRUD DE MATERIAIS - FIM -----
     
+    # ----- CRUD DE AGENDAMENTOS -----
+    path('agendamentos/', views.agendamentos_listar, name='agendamentos_listar'),
+    path('agendamentos/form/', views.agendamentos_form, name='agendamentos_form'),
+    path('agendamentos/deletar/<int:id>/', views.agendamentos_delete, name = 'agendamentos_delete' ),
+    path('agendamentos/editar/<int:id>', views.agendamentos_editar , name = 'agendamentos_editar')
+    # ----- CRUD DE AGENDAMENTOS - FIM -----
+    
 ]
 
 

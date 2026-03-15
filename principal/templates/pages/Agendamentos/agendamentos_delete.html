@@ -89,7 +89,6 @@
 
             <div class="ag-info">
                 <div class="info-row"><span class="info-label">Laboratório:</span> {{ ag.id_laboratorio.nome }}</div>
-                <div class="info-row"><span class="info-label">Usuário:</span> {{ ag.id_usuarios.nome }}</div>
                 <div class="info-row"><span class="info-label">Tipo:</span> {{ ag.tipo_de_atividade }}</div>
                 <div class="info-row"><span class="info-label">Data Início:</span> {{ ag.data_inicial }}</div>
                 <div class="info-row"><span class="info-label">Data Final:</span> {{ ag.data_final }}</div>
@@ -105,7 +104,7 @@
                 <a href="{% url 'agendamentos_listar' %}" class="btn">
                     <i class="fa-solid fa-xmark"></i> Cancelar
                 </a>
-                <form method="POST" style="display:inline">
+                <form method="POST" action="{% url "agendamentos_delete" ag.id_agendamentos %}" style="display:inline">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger">
                         <i class="fa-solid fa-trash"></i> Confirmar Exclusão
